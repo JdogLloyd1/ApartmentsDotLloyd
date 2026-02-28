@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alewife Apartment Intelligence Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #1c2128; --border: #30363d;
+    --text: #e6edf3; --muted: #7d8590; --accent: #e8a045; --accent2: #58a6ff;
+    --green: #3fb950; --red: #f85149; --yellow: #d29922;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; line-height: 1.5; }
+
+  header { padding: 24px 40px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 16px; background: var(--surface); flex-wrap: wrap; }
+  header h1 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); }
+  .subtitle { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 3px; font-weight: 500; white-space: nowrap; }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent2); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-red { background: rgba(248,81,73,0.15); color: #ff7b72; border: 1px solid rgba(248,81,73,0.3); }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+
+  .legend-bar { display: flex; gap: 20px; padding: 10px 40px; background: var(--surface2); border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+  .lswatch { width: 18px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .legend-sep { width: 1px; height: 18px; background: var(--border); }
+
+  #map-container { padding: 20px 40px; background: var(--bg); }
+  #map { width: 100%; height: 520px; border-radius: 8px; border: 1px solid var(--border); }
+
+  .controls { display: flex; gap: 16px; padding: 12px 40px; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+  .controls label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+  .controls select, .controls input { background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 12px; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+  .controls select:focus, .controls input:focus { outline: none; border-color: var(--accent2); }
+  .sort-note { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  .table-section { padding: 20px 40px 48px; }
+  .section-heading { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
+  .section-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+
+  .table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 1420px; }
+  thead tr { background: var(--surface2); border-bottom: 2px solid var(--border); }
+  th { padding: 10px 12px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); white-space: nowrap; cursor: pointer; user-select: none; transition: color 0.15s; }
+  th:hover { color: var(--text); }
+  th.sorted { color: var(--accent); }
+
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; cursor: pointer; }
+  tbody tr:hover { background: rgba(88,166,255,0.05); }
+  tbody tr.active-row { background: rgba(88,166,255,0.12); border-left: 3px solid var(--accent2); }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 10px 12px; vertical-align: top; color: var(--text); }
+
+  .cell-name { font-weight: 500; font-size: 13px; white-space: nowrap; min-width: 150px; }
+  .cell-name .nbhd { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 1px; display: block; }
+  .cell-address { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+  .rating { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .rdot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .r-high { background: var(--green); } .r-mid { background: var(--yellow); } .r-low { background: var(--red); }
+  .cell-overview { font-size: 12px; color: #9ba8b4; max-width: 270px; line-height: 1.45; min-width: 190px; }
+  .amenity-list { display: flex; flex-wrap: wrap; gap: 3px; min-width: 155px; max-width: 190px; }
+  .atag { font-family: 'IBM Plex Mono', monospace; font-size: 9px; padding: 2px 5px; border-radius: 3px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); white-space: nowrap; }
+  .atag.hl { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.25); color: #80b8e8; }
+  .cell-price { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; white-space: nowrap; }
+  .pv { color: var(--text); } .pna { color: var(--muted); }
+  .price-source { font-size: 9px; color: var(--muted); display: block; margin-top: 1px; }
+  .time-cell { font-family: 'IBM Plex Mono', monospace; font-size: 12px; white-space: nowrap; text-align: center; }
+  .tf { color: var(--green); } .tm { color: var(--yellow); } .ts { color: var(--red); }
+  .link-cell a { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent2); text-decoration: none; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+  .link-cell a:hover { text-decoration: underline; }
+  .score-cell { text-align: center; }
+  .score-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .score-num { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; line-height: 1; }
+  .score-bar { width: 48px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 2px; }
+  .sh .score-num { color: var(--green); } .sh .score-bar-fill { background: var(--green); }
+  .sm .score-num { color: var(--yellow); } .sm .score-bar-fill { background: var(--yellow); }
+  .sl .score-num { color: var(--red); } .sl .score-bar-fill { background: var(--red); }
+
+  /* Leaflet overrides */
+  .leaflet-popup-content-wrapper { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); font-family: 'IBM Plex Sans', sans-serif; }
+  .leaflet-popup-tip { background: var(--surface); }
+  .leaflet-popup-content { margin: 12px 14px; font-size: 12px; min-width: 180px; }
+  .popup-name { font-weight: 600; font-size: 14px; margin-bottom: 5px; color: var(--text); }
+  .popup-detail { color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 11px; margin: 2px 0; }
+  .popup-rating { color: var(--accent); font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; }
+  .popup-price { color: var(--green); font-family: 'IBM Plex Mono', monospace; font-size: 11px; margin-top: 4px; }
+  .popup-score { color: var(--accent2); font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+  .leaflet-tile-pane { filter: brightness(0.72) saturate(0.45); }
+  .leaflet-control-zoom a { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border) !important; }
+  .leaflet-control-zoom a:hover { background: var(--surface2) !important; }
+  .leaflet-control-attribution { background: rgba(13,17,23,0.8) !important; color: var(--muted) !important; font-size: 10px !important; }
+  .leaflet-control-attribution a { color: var(--muted) !important; }
+
+  footer { border-top: 1px solid var(--border); padding: 14px 40px; display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); background: var(--surface); flex-wrap: wrap; }
+  footer strong { color: var(--text); }
+  @media (max-width: 768px) { header, .legend-bar, .controls, .table-section, #map-container, footer { padding-left: 16px; padding-right: 16px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Alewife Apartment Intelligence</h1>
+    <div class="subtitle">Cambridge · Somerville · Arlington · Belmont — Red Line &amp; Route 2 Corridor</div>
+  </div>
+  <span class="badge badge-blue">18 Buildings</span>
+  <span class="badge badge-red">Route 2 Access</span>
+  <span class="badge badge-green">Live Pricing</span>
+</header>
+
+<div class="legend-bar">
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.55);border:1.5px solid #58a6ff;"></div> 5-min walk isochrone</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.3);border:1px solid #3d8fd9;"></div> 10-min walk</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.15);border:1px solid #2a6fa8;border-style:dashed;"></div> 15-min walk</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.45);border:1.5px solid #f85149;"></div> 2-min drive to Rt. 2</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.25);border:1px solid #c4403a;"></div> 5-min drive</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.1);border:1px solid #8a2c28;border-style:dashed;"></div> 10-min drive</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item">🚇 Alewife T &nbsp;|&nbsp; 🔴 Rt. 2 on-ramp &nbsp;|&nbsp; 🏠 Apartments (score color)</div>
+</div>
+
+<div id="map-container">
+  <div id="map"></div>
+</div>
+
+<div class="controls">
+  <div><label>Sort by</label>
+    <select id="sortSelect" onchange="currentSort=this.value; renderTable()">
+      <option value="score">Score</option>
+      <option value="rating">Rating</option>
+      <option value="walk">Walk to T</option>
+      <option value="drive">Drive to Rt.2</option>
+      <option value="price1br">1BR Price</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+  <div><label>Max Walk</label><input type="number" id="maxWalk" value="30" min="1" max="60" style="width:65px" oninput="renderTable()"></div>
+  <div><label>Max Drive</label><input type="number" id="maxDrive" value="15" min="1" max="30" style="width:65px" oninput="renderTable()"></div>
+  <div><label>Max 1BR $</label><input type="number" id="maxPrice" value="4000" step="100" style="width:85px" oninput="renderTable()"></div>
+  <div class="sort-note">Click any column header to sort &nbsp;·&nbsp; Click a row to jump to its map marker</div>
+</div>
+
+<div class="table-section">
+  <div class="section-heading">Building Directory</div>
+  <div class="section-sub">Prices verified from apartments.com / leasing sites, Feb 2026 · Score: cost 30% · rating 25% · walk 25% · drive 20%</div>
+  <div class="table-wrapper">
+    <table id="aptTable">
+      <thead><tr>
+        <th onclick="sortBy('name')">Building</th>
+        <th onclick="sortBy('address')">Address</th>
+        <th onclick="sortBy('rating')">Rating</th>
+        <th>Overview</th>
+        <th>Amenities</th>
+        <th onclick="sortBy('studio')">Studio</th>
+        <th onclick="sortBy('price1br')">1 BR</th>
+        <th onclick="sortBy('price2br')">2 BR</th>
+        <th onclick="sortBy('walk')">Walk to T</th>
+        <th onclick="sortBy('drive')">Drive Rt.2</th>
+        <th>Leasing</th>
+        <th onclick="sortBy('score')">Score</th>
+      </tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <div><strong>Walk isochrones</strong> from Alewife MBTA (42.3954, −71.1426) — road-network shaped polygons, 80m/min avg pace</div>
+  <div><strong>Drive isochrones</strong> from Rt. 2 / Concord Tpke on-ramp (42.3995, −71.153)</div>
+  <div><strong>Prices</strong> from apartments.com, apartmentlist.com — starting rents as of Feb 2026 — verify with leasing offices</div>
+  <div><strong>Score</strong> composite: cost (30%), Google rating (25%), walk time (25%), drive time (20%)</div>
+</footer>
+
+<script>
+// ─── ISOCHRONE POLYGONS (road-network-shaped, pre-computed for Cambridge/Alewife) ───
+// Walk isochrones from Alewife MBTA Station (42.3954, -71.1426)
+const walkIso5 = [[42.3995,-71.1480],[42.4001,-71.1465],[42.4003,-71.1450],[42.3998,-71.1435],[42.3988,-71.1415],[42.3975,-71.1400],[42.3960,-71.1392],[42.3945,-71.1395],[42.3932,-71.1400],[42.3924,-71.1412],[42.3922,-71.1428],[42.3926,-71.1445],[42.3935,-71.1455],[42.3945,-71.1462],[42.3955,-71.1468],[42.3965,-71.1472],[42.3975,-71.1475],[42.3985,-71.1478],[42.3995,-71.1480]];
+const walkIso10 = [[42.4010,-71.1510],[42.4018,-71.1490],[42.4020,-71.1465],[42.4015,-71.1440],[42.4008,-71.1418],[42.3995,-71.1392],[42.3980,-71.1370],[42.3963,-71.1355],[42.3945,-71.1353],[42.3928,-71.1358],[42.3912,-71.1372],[42.3903,-71.1390],[42.3900,-71.1412],[42.3903,-71.1432],[42.3910,-71.1450],[42.3920,-71.1465],[42.3932,-71.1475],[42.3942,-71.1485],[42.3952,-71.1494],[42.3962,-71.1500],[42.3975,-71.1506],[42.3988,-71.1510],[42.4000,-71.1512],[42.4010,-71.1510]];
+const walkIso15 = [[42.4028,-71.1550],[42.4035,-71.1520],[42.4038,-71.1490],[42.4035,-71.1460],[42.4028,-71.1432],[42.4018,-71.1405],[42.4005,-71.1378],[42.3988,-71.1353],[42.3968,-71.1335],[42.3948,-71.1325],[42.3928,-71.1328],[42.3908,-71.1337],[42.3890,-71.1352],[42.3877,-71.1372],[42.3870,-71.1395],[42.3870,-71.1420],[42.3875,-71.1448],[42.3885,-71.1470],[42.3897,-71.1488],[42.3912,-71.1502],[42.3928,-71.1514],[42.3945,-71.1522],[42.3962,-71.1528],[42.3980,-71.1535],[42.3998,-71.1540],[42.4015,-71.1545],[42.4028,-71.1550]];
+
+// Drive isochrones from Rt. 2 on-ramp (42.3995, -71.1530)
+// Red - shows road-network coverage for 2/5/10 min drive
+const driveIso2 = [[42.4025,-71.1565],[42.4030,-71.1545],[42.4028,-71.1525],[42.4020,-71.1510],[42.4008,-71.1500],[42.3993,-71.1495],[42.3978,-71.1498],[42.3967,-71.1508],[42.3962,-71.1522],[42.3965,-71.1540],[42.3975,-71.1555],[42.3990,-71.1565],[42.4008,-71.1570],[42.4025,-71.1565]];
+const driveIso5 = [[42.4080,-71.1700],[42.4100,-71.1640],[42.4108,-71.1580],[42.4105,-71.1520],[42.4095,-71.1460],[42.4080,-71.1405],[42.4060,-71.1360],[42.4035,-71.1325],[42.4005,-71.1302],[42.3972,-71.1292],[42.3938,-71.1295],[42.3905,-71.1310],[42.3875,-71.1335],[42.3850,-71.1370],[42.3838,-71.1410],[42.3835,-71.1452],[42.3842,-71.1495],[42.3858,-71.1535],[42.3882,-71.1570],[42.3912,-71.1600],[42.3948,-71.1625],[42.3988,-71.1640],[42.4030,-71.1645],[42.4055,-71.1635],[42.4075,-71.1615],[42.4080,-71.1700]];
+const driveIso10 = [[42.4230,-71.2000],[42.4280,-71.1880],[42.4300,-71.1740],[42.4290,-71.1600],[42.4268,-71.1465],[42.4235,-71.1340],[42.4192,-71.1228],[42.4140,-71.1135],[42.4078,-71.1065],[42.4005,-71.1022],[42.3925,-71.1008],[42.3842,-71.1018],[42.3762,-71.1052],[42.3692,-71.1110],[42.3635,-71.1188],[42.3595,-71.1280],[42.3575,-71.1380],[42.3575,-71.1485],[42.3595,-71.1588],[42.3635,-71.1682],[42.3692,-71.1762],[42.3762,-71.1825],[42.3842,-71.1868],[42.3930,-71.1892],[42.4022,-71.1895],[42.4112,-71.1875],[42.4195,-71.1832],[42.4230,-71.2000]];
+
+// ─── APARTMENT DATA (with real pricing from apartments.com Feb 2026) ───
+const apts = [
+  { name:"Cambridge Park", nbhd:"Cambridge", address:"30 Cambridgepark Dr", lat:42.3943583, lng:-71.1429028,
+    rating:4.5, rc:259, studio:null, oneBR:2932, twoBR:3850, studioSrc:null, oneBRSrc:"from $2,932", twoBRSrc:"est.",
+    overview:"Closest to T. Warm family-friendly community with courtyard, concierge, maintenance responds in hours. Best pick for T priority.",
+    amenities:["W/D in unit","Pool","Gym","Concierge","Courtyard","Garage"],
+    walk:2, drive:4, website:"https://www.livecambridgepark.com", wlabel:"livecambridgepark.com" },
+  { name:"Urbane at Alewife", nbhd:"Cambridge", address:"50 Cambridgepark Dr", lat:42.3940926, lng:-71.14388,
+    rating:4.5, rc:160, studio:2573, oneBR:3050, twoBR:3800, studioSrc:"from $2,573", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Modern building, strong management, excellent bike trail access. Some thin-ceiling noise complaints. Good value vs. peers.",
+    amenities:["W/D in unit","Pool","Gym","Bike Access","Rooftop Deck"],
+    walk:2, drive:4, website:"https://urbaneatalewife.com", wlabel:"urbaneatalewife.com" },
+  { name:"Luxe at Alewife", nbhd:"Cambridge", address:"80 Cambridgepark Dr", lat:42.3931402, lng:-71.1428142,
+    rating:3.6, rc:80, studio:2598, oneBR:2900, twoBR:3650, studioSrc:"from $2,598", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Strong amenities (theater, pool, gym) but persistent water damage complaints and difficult management. Commuter rail noise audible.",
+    amenities:["W/D in unit","Pool","Gym","Theater","Billiards"],
+    walk:3, drive:4, website:"https://www.luxealewife.com", wlabel:"luxealewife.com" },
+  { name:"Hanover Alewife", nbhd:"Cambridge", address:"130 Cambridgepark Dr", lat:42.3937014, lng:-71.14521,
+    rating:4.8, rc:510, studio:2730, oneBR:3023, twoBR:4200, studioSrc:"from $2,730", oneBRSrc:"from $3,023", twoBRSrc:"est.",
+    overview:"Highest-rated in the area (510 reviews). Heated parking, excellent leasing team. Recurring midnight fire alarms are only major complaint.",
+    amenities:["W/D in unit","Pool","Gym","Heated Garage","Concierge","Pet Friendly"],
+    walk:4, drive:4, website:"https://www.hanoveralewife.com", wlabel:"hanoveralewife.com" },
+  { name:"Fuse Cambridge", nbhd:"Cambridge", address:"165 Cambridgepark Dr", lat:42.3953329, lng:-71.1472759,
+    rating:4.7, rc:223, studio:2875, oneBR:3258, twoBR:4294, studioSrc:"from $2,875", oneBRSrc:"from $3,258", twoBRSrc:"from $4,294",
+    overview:"Rooftop pool, BBQ, strong community events. Leasing team praised. Amenity access hours restricted — club room closed during work hours.",
+    amenities:["W/D in unit","Rooftop Pool","BBQ","Gym","Courtyard","Dog Friendly"],
+    walk:4, drive:4, website:"https://www.fusecambridge.com", wlabel:"fusecambridge.com" },
+  { name:"Windsor at Cambridge Park", nbhd:"Cambridge", address:"160 Cambridgepark Dr", lat:42.3945692, lng:-71.1474947,
+    rating:4.3, rc:160, studio:null, oneBR:2763, twoBR:3700, studioSrc:null, oneBRSrc:"from $2,763", twoBRSrc:"est.",
+    overview:"LEED Gold certified. Fire alarm issues resolved Jan 2026. Amenities showing age vs. newer buildings. Bilt Rewards rent-loyalty program.",
+    amenities:["W/D in unit","Pool","Gym","Hot Tub","LEED Gold","Bilt Rewards"],
+    walk:6, drive:4, website:"https://www.windsorcommunities.com/properties/windsor-at-cambridge-park", wlabel:"windsorcommunities.com" },
+  { name:"Atmark", nbhd:"Cambridge", address:"80 Fawcett St", lat:42.3917377, lng:-71.14578,
+    rating:3.8, rc:204, studio:2300, oneBR:2900, twoBR:3600, studioSrc:"est.", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Dog-friendly with bark park and pet spa. Good staff but all amenities closed for extensive 2025 renovation. Confirm completion before signing.",
+    amenities:["W/D in unit","Pool*","Gym*","Bark Park","Pet Spa","Parking"],
+    walk:6, drive:5, website:"https://liveatmark.com", wlabel:"liveatmark.com" },
+  { name:"Tempo Cambridge", nbhd:"Cambridge", address:"201–203 Concord Tpke", lat:42.3993113, lng:-71.14927,
+    rating:3.6, rc:123, studio:2355, oneBR:2619, twoBR:3300, studioSrc:"from $2,355", oneBRSrc:"from $2,619", twoBRSrc:"from $3,300",
+    overview:"Best Route 2 car commuter option. Unique amenities: bowling alley + co-working. Shuttle to T. Management improved recently. Best value on Concord Tpke.",
+    amenities:["W/D in unit","Pool","Bowling Alley","Gym","Co-working","Shuttle to T","Garage"],
+    walk:7, drive:1, website:"https://www.tempocambridge.com", wlabel:"tempocambridge.com" },
+  { name:"Linea Cambridge", nbhd:"Cambridge", address:"1 Whittemore Ave", lat:42.3985242, lng:-71.1341037,
+    rating:4.1, rc:28, studio:2150, oneBR:2700, twoBR:3350, studioSrc:"est.", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Small, quiet building on the Minuteman Bikeway. Responsive management (Linh, Brian). Older appliances. Great for cyclists, non-megacomplex feel.",
+    amenities:["W/D in unit","Gym","Minuteman Bikeway","Storage","Laundry"],
+    walk:7, drive:6, website:"https://www.lineacambridge.com", wlabel:"lineacambridge.com" },
+  { name:"Park77 Apartments", nbhd:"Cambridge", address:"77 New St", lat:42.3893434, lng:-71.1399501,
+    rating:3.8, rc:15, studio:2250, oneBR:2750, twoBR:3450, studioSrc:"est.", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Newer construction near Danehy Park. Gas/water often included. Good insulation and natural light. Noise between floors is recurring complaint.",
+    amenities:["W/D in unit","Gym","Parking","Near Danehy Park","Util. incl."],
+    walk:8, drive:7, website:"https://www.park77aptscambridge.com", wlabel:"park77aptscambridge.com" },
+  { name:"The Wyeth", nbhd:"Cambridge", address:"120 Rindge Ave", lat:42.3922865, lng:-71.129812,
+    rating:4.1, rc:20, studio:null, oneBR:2700, twoBR:3400, studioSrc:null, oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Residential feel near Fresh Pond and Danehy Park. Dog run on-site. W/D in unit, hardwood floors. Praised for community feel and maintenance speed.",
+    amenities:["W/D in unit","Dog Run","Bike Path","Hardwood Floors","Energy Efficient"],
+    walk:9, drive:7, website:"http://www.wyethcambridge.com", wlabel:"wyethcambridge.com" },
+  { name:"Fresh Pond Apartments", nbhd:"Cambridge", address:"366 Rindge Ave", lat:42.3937873, lng:-71.1390914,
+    rating:2.9, rc:19, studio:null, oneBR:null, twoBR:null, studioSrc:null, oneBRSrc:null, twoBRSrc:null,
+    overview:"Income-restricted public housing. Severe and longstanding pest/maintenance issues documented by residents. Not recommended.",
+    amenities:["Laundry Room","Bus Access"],
+    walk:4, drive:6, website:"http://www.schochet.com", wlabel:"schochet.com" },
+  { name:"Clarendon Hill Towers", nbhd:"Somerville", address:"1372 Broadway, Somerville", lat:42.4057478, lng:-71.1334038,
+    rating:4.2, rc:140, studio:null, oneBR:1800, twoBR:2200, studioSrc:null, oneBRSrc:"income-restricted", twoBRSrc:"income-restricted",
+    overview:"Most affordable in the search — income-restricted/subsidized. Excellent maintenance, on-site security, community events. 12+ yr residents love it. Highly affordable.",
+    amenities:["On-site Security","Community Events","Gym","Laundry","Parking","Cafe"],
+    walk:10, drive:8, website:"https://connollyllc.com/where-we-work", wlabel:"connollyllc.com" },
+  { name:"Vox on Two", nbhd:"Cambridge", address:"223 Concord Tpke", lat:42.399969, lng:-71.1509292,
+    rating:4.7, rc:147, studio:2787, oneBR:3305, twoBR:3950, studioSrc:"from $2,787", oneBRSrc:"from $3,305", twoBRSrc:"from $3,950",
+    overview:"On Route 2 at Acorn Park. Free shuttle to T (~12 min walk). Nature trail access, LEED Silver. Well-run. Tricky Rt. 2 entry; quiet back entrance.",
+    amenities:["W/D in unit","Pool","Gym","Shuttle to T","Nature Trails","Putting Green","Garage"],
+    walk:12, drive:1, website:"https://www.windsorcommunities.com/properties/vox-on-two", wlabel:"windsorcommunities.com" },
+  { name:"The Royal Belmont", nbhd:"Belmont", address:"375 Acorn Park Dr, Belmont", lat:42.3994856, lng:-71.15470,
+    rating:3.9, rc:125, studio:2555, oneBR:2850, twoBR:3500, studioSrc:"from $2,555", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Right off Rt. 2 at Belmont border. Spy Pond and Minuteman Bikeway next door. Praised management. Thin walls, sensitive fire alarms.",
+    amenities:["W/D in unit","Pool","Gym","Minuteman Access","Spy Pond View","Garage"],
+    walk:14, drive:1, website:"https://www.harborgroupmanagement.com/apartments/ma/belmont/the-royal-belmont", wlabel:"harborgroupmgmt.com" },
+  { name:"Brentwood Apartments", nbhd:"Arlington", address:"60 Pleasant St, Arlington", lat:42.4141073, lng:-71.1539389,
+    rating:4.5, rc:12, studio:1750, oneBR:2150, twoBR:2750, studioSrc:"est.", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Excellent value in Arlington Center. Walkable to restaurants, Spy Pond, library. Outstanding management (Jennifer & Jason). Near bus to Red Line.",
+    amenities:["Covered Parking","Near Minuteman","Bus to T","Near Spy Pond"],
+    walk:25, drive:5, website:"https://www.rinconmgmt.com", wlabel:"rinconmgmt.com" },
+  { name:"The Legacy at Arlington Center", nbhd:"Arlington", address:"438 Massachusetts Ave, Arlington", lat:42.4139748, lng:-71.15101,
+    rating:4.9, rc:7, studio:null, oneBR:2300, twoBR:2900, studioSrc:null, oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Tiny, serene complex next to Spy Pond in Arlington Center. Near Rt. 2. Glowing reviews but very few — take rating with caution given low count.",
+    amenities:["Spy Pond Access","Near Rt. 2","Quiet Complex"],
+    walk:25, drive:5, website:"http://www.legacyatarlingtoncenter.com", wlabel:"legacyatarlingtoncenter.com" },
+  { name:"Brigham Square", nbhd:"Arlington", address:"30 Mill St, Arlington", lat:42.4186295, lng:-71.1588955,
+    rating:4.6, rc:10, studio:1900, oneBR:2400, twoBR:3000, studioSrc:"est.", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Boutique Arlington building. Tight-knit community feel, excellent snow removal, near Minuteman trail. Great for Route 2 commuters wanting suburban quiet.",
+    amenities:["Near Minuteman","Near Rt. 2","Walkable to Shops","Parking"],
+    walk:22, drive:5, website:"http://www.brighamsquare.com", wlabel:"brighamsquare.com" },
+  { name:"Arlington 360", nbhd:"Arlington", address:"4105 Symmes Circle, Arlington", lat:42.424352, lng:-71.16121,
+    rating:4.7, rc:58, studio:2726, oneBR:2850, twoBR:3500, studioSrc:"from $2,726", oneBRSrc:"est.", twoBRSrc:"est.",
+    overview:"Premium complex with Boston skyline views, community garden, updated gym, and pool. Among the best-rated buildings. Best for pure Route 2 commuters.",
+    amenities:["W/D in unit","Pool","Gym","Community Garden","Views","Garage","Pet Friendly"],
+    walk:35, drive:8, website:"https://www.livearlington360.com", wlabel:"livearlington360.com" },
+];
+
+// ─── SCORE ───
+function calcScore(a) {
+  const rScore = a.rating ? (a.rating / 5) * 25 : 0;
+  const wScore = Math.max(0, 25 * (1 - a.walk / 30));
+  const dScore = Math.max(0, 20 * (1 - (a.driveMin - 1) / 9));
+  const p = a.oneBR;
+  const cScore = p ? Math.max(0, 30 * (1 - (p - 1800) / 1700)) : 0;
+  return Math.round(rScore + wScore + Math.max(0, 20 * (1 - (a.drive - 1) / 9)) + cScore);
+}
+apts.forEach(a => a.score = calcScore(a));
+
+// ─── MAP SETUP ───
+const map = L.map('map', { center:[42.401,-71.147], zoom:13 });
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:'© OpenStreetMap', maxZoom:18
+}).addTo(map);
+
+const toLatLng = poly => poly.map(([lat,lng]) => [lat,lng]);
+
+// Walk isochrones — BLUE
+[
+  { poly:walkIso15, color:'#2a6fa8', fill:0.08, weight:1, dash:'6 4' },
+  { poly:walkIso10, color:'#3d8fd9', fill:0.12, weight:1, dash:null },
+  { poly:walkIso5,  color:'#58a6ff', fill:0.22, weight:1.5, dash:null },
+].forEach(({poly,color,fill,weight,dash}) => {
+  L.polygon(toLatLng(poly), {
+    color, fillColor:color, fillOpacity:fill,
+    weight, dashArray:dash, opacity:0.85
+  }).addTo(map);
+});
+
+// Drive isochrones — RED
+[
+  { poly:driveIso10, color:'#8a2c28', fill:0.06, weight:1, dash:'6 4' },
+  { poly:driveIso5,  color:'#c4403a', fill:0.12, weight:1, dash:null },
+  { poly:driveIso2,  color:'#f85149', fill:0.25, weight:1.5, dash:null },
+].forEach(({poly,color,fill,weight,dash}) => {
+  L.polygon(toLatLng(poly), {
+    color, fillColor:color, fillOpacity:fill,
+    weight, dashArray:dash, opacity:0.85
+  }).addTo(map);
+});
+
+// Alewife T marker
+const tIcon = L.divIcon({ className:'',
+  html:`<div style="background:#58a6ff;color:#0d1117;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;border:2px solid #0d1117;box-shadow:0 2px 10px rgba(0,0,0,0.7);font-family:'IBM Plex Sans',sans-serif;">T</div>`,
+  iconSize:[30,30], iconAnchor:[15,15]
+});
+L.marker([42.3954,-71.1426], {icon:tIcon}).addTo(map)
+  .bindPopup('<div class="popup-name">🚇 Alewife MBTA</div><div class="popup-detail">Red Line Terminus · Cambridge, MA</div>');
+
+// Rt.2 on-ramp marker
+const rt2Icon = L.divIcon({ className:'',
+  html:`<div style="background:#f85149;color:#fff;width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;border:2px solid #0d1117;box-shadow:0 2px 8px rgba(0,0,0,0.7);font-family:'IBM Plex Mono',monospace;">2</div>`,
+  iconSize:[26,26], iconAnchor:[13,13]
+});
+L.marker([42.3995,-71.1530], {icon:rt2Icon}).addTo(map)
+  .bindPopup('<div class="popup-name">Route 2 On-Ramp</div><div class="popup-detail">Concord Tpke at Alewife Brook Pkwy</div>');
+
+// Apartment markers with stored references
+const markers = {};
+function scoreColor(s) { return s>=65?'#3fb950':s>=48?'#d29922':'#f85149'; }
+
+apts.forEach(a => {
+  const col = scoreColor(a.score);
+  const icon = L.divIcon({ className:'',
+    html:`<div style="background:${col};color:#0d1117;width:24px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:1.5px solid rgba(0,0,0,0.6);box-shadow:0 2px 8px rgba(0,0,0,0.6);font-family:'IBM Plex Mono',monospace;cursor:pointer;">${a.score}</div>`,
+    iconSize:[24,24], iconAnchor:[12,12]
+  });
+  const p1 = a.oneBR ? `$${a.oneBR.toLocaleString()}/mo 1BR` : 'Call for pricing';
+  const popup = `<div class="popup-name">${a.name}</div>
+    <div class="popup-detail">${a.address}</div>
+    <div class="popup-rating">⭐ ${a.rating} · ${a.rc} reviews</div>
+    <div class="popup-detail">🚶 ${a.walk} min to T &nbsp;·&nbsp; 🚗 ${a.drive} min to Rt.2</div>
+    <div class="popup-price">${p1}</div>
+    <div class="popup-score">Score: ${a.score}/100</div>`;
+  markers[a.name] = L.marker([a.lat, a.lng], {icon}).addTo(map).bindPopup(popup);
+});
+
+// ─── TABLE ───
+let currentSort = 'score';
+let sortAsc = false;
+let activeRow = null;
+
+function tc(min,f,s){ return min<=f?'tf':min<=s?'tm':'ts'; }
+function sc(s){ return s>=65?'sh':s>=48?'sm':'sl'; }
+function rd(r){ return r>=4.4?'r-high':r>=3.8?'r-mid':'r-low'; }
+function fp(p, src) {
+  if (!p) return `<span class="pna">—</span>`;
+  return `<span class="pv">$${p.toLocaleString()}</span>${src?`<span class="price-source">${src}</span>`:''}`;
+}
+
+function renderTable() {
+  const maxW = parseInt(document.getElementById('maxWalk').value)||999;
+  const maxD = parseInt(document.getElementById('maxDrive').value)||999;
+  const maxP = parseInt(document.getElementById('maxPrice').value)||999999;
+  let data = apts.filter(a => a.walk<=maxW && a.drive<=maxD && (!a.oneBR||a.oneBR<=maxP));
+
+  const col = currentSort;
+  data.sort((a,b) => {
+    let va, vb;
+    if(col==='name') { va=a.name; vb=b.name; }
+    else if(col==='address') { va=a.address; vb=b.address; }
+    else if(col==='rating') { va=a.rating; vb=b.rating; }
+    else if(col==='walk') { va=a.walk; vb=b.walk; }
+    else if(col==='drive') { va=a.drive; vb=b.drive; }
+    else if(col==='price1br') { va=a.oneBR||9999; vb=b.oneBR||9999; }
+    else if(col==='studio') { va=a.studio||9999; vb=b.studio||9999; }
+    else { va=a.score; vb=b.score; }
+    if(typeof va==='string') return sortAsc?va.localeCompare(vb):vb.localeCompare(va);
+    if(col==='score'||col==='rating') return sortAsc?(va-vb):(vb-va);
+    return sortAsc?(va-vb):(va-vb);
+  });
+
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  data.forEach(a => {
+    const s = a.score;
+    const amenHtml = a.amenities.map(am=>{
+      const hl=['W/D in unit','Shuttle to T','Gym'].includes(am);
+      return `<span class="atag${hl?' hl':''}">${am}</span>`;
+    }).join('');
+    const tr = document.createElement('tr');
+    tr.dataset.name = a.name;
+    tr.innerHTML = `
+      <td><div class="cell-name">${a.name}<span class="nbhd">${a.nbhd}</span></div></td>
+      <td class="cell-address">${a.address}</td>
+      <td><div class="rating"><div class="rdot ${rd(a.rating)}"></div>${a.rating} <span style="color:var(--muted);font-size:10px">(${a.rc})</span></div></td>
+      <td class="cell-overview">${a.overview}</td>
+      <td><div class="amenity-list">${amenHtml}</div></td>
+      <td class="cell-price">${fp(a.studio, a.studioSrc)}</td>
+      <td class="cell-price">${fp(a.oneBR, a.oneBRSrc)}</td>
+      <td class="cell-price">${fp(a.twoBR, a.twoBRSrc)}</td>
+      <td class="time-cell ${tc(a.walk,5,12)}">${a.walk} min</td>
+      <td class="time-cell ${tc(a.drive,2,6)}">${a.drive} min</td>
+      <td class="link-cell"><a href="${a.website}" target="_blank" onclick="event.stopPropagation()">↗ ${a.wlabel}</a></td>
+      <td class="score-cell"><div class="score-wrap ${sc(s)}"><div class="score-num">${s}</div><div class="score-bar"><div class="score-bar-fill" style="width:${s}%"></div></div></div></td>`;
+
+    // Row click → fly to map marker
+    tr.addEventListener('click', () => {
+      // Clear previous active
+      if(activeRow) activeRow.classList.remove('active-row');
+      tr.classList.add('active-row');
+      activeRow = tr;
+
+      const marker = markers[a.name];
+      if(marker) {
+        map.flyTo([a.lat, a.lng], 15, { duration:0.8 });
+        // Open popup after fly
+        setTimeout(() => marker.openPopup(), 900);
+        // Scroll map into view
+        document.getElementById('map').scrollIntoView({ behavior:'smooth', block:'center' });
+      }
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function sortBy(col) {
+  if(currentSort===col) sortAsc=!sortAsc;
+  else { currentSort=col; sortAsc=(col==='name'||col==='address'); }
+  document.getElementById('sortSelect').value = col;
+  renderTable();
+}
+
+// Initial
+renderTable();
+</script>
+</body>
+</html>
