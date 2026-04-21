@@ -4,28 +4,28 @@ overview: Convert the static Alewife apartment dashboard into a live data-driven
 todos:
   - id: sprint-0
     content: "Sprint 0 — Foundation & Tooling: scaffold backend, pyproject, ruff, mypy, pytest, Makefile, CI, /api/health smoke test"
-    status: pending
+    status: completed
   - id: sprint-1
     content: "Sprint 1 — Data Seed & Building Catalog: parse static JS apts array into buildings_seed.json, SQLModel Building table, idempotent loader"
-    status: pending
+    status: completed
   - id: sprint-2
     content: "Sprint 2 — Core API: GET /api/buildings, /api/buildings/{slug}, scoring module ported from HTML, TestClient integration tests"
-    status: pending
+    status: completed
   - id: sprint-3
     content: "Sprint 3 — API-Driven Frontend: move HTML to frontend/, extract JS/CSS, fetch /api/buildings, static file serving from FastAPI"
-    status: pending
+    status: completed
   - id: sprint-4
     content: "Sprint 4 — Routing Service: ORS client, travel_time + isochrone tables, refresh services, /api/isochrones, frontend uses L.geoJSON"
-    status: pending
+    status: completed
   - id: sprint-5
     content: "Sprint 5 — Scrapers: Playwright base, apartments.com + Google Maps scrapers, snapshot tables, offline fixture tests"
-    status: pending
+    status: completed
   - id: sprint-6
     content: "Sprint 6 — Refresh Orchestration: TTL cache, APScheduler cron, POST /api/refresh with auth, refresh_run table, freshness header + UI chip"
-    status: pending
+    status: completed
   - id: sprint-7
     content: "Sprint 7 — Local Full-Stack Validation (deployment gate): Dockerfile, docker-compose.local.yml, Makefile up-local, E2E smoke, standalone RUN_LOCALLY.md walkthrough, LOCAL_VALIDATION.md QA checklist"
-    status: pending
+    status: in_progress
   - id: sprint-8
     content: "Sprint 8 — Production Deployment: prod compose + Caddy, bootstrap script, GitHub Actions deploy, DO droplet smoke, Posit fallback documented"
     status: pending

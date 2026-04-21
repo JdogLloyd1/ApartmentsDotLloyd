@@ -1,0 +1,34 @@
+{
+  "_comment": [
+    "Scrape targets per building. Keyed by slug; values map to the Building.apartments_com_url and Building.google_place_id columns.",
+    "",
+    "How to populate:",
+    "1. apartments.com listing URL: search '<building name> <address>' on apartments.com, open the listing, copy the URL. Example shape: https://www.apartments.com/<building>-<city>-<state>/<id>/",
+    "2. google_place_id: open the building on Google Maps, click 'Share', use the short URL or look up the place_id via https://developers.google.com/maps/documentation/places/web-service/place-id. Example shape: ChIJ...",
+    "",
+    "Buildings with NULL values are skipped by the scrapers (the app falls back to the seed values from the static dashboard). Safe to re-run the seed loader after updating this file.",
+    "",
+    "All entries below are placeholders. Replace each null with the real URL or place_id, then run: python -m app.seed.loader"
+  ],
+  "buildings": {
+    "cambridge-park":              { "apartments_com_url": null, "google_place_id": null },
+    "urbane-at-alewife":           { "apartments_com_url": null, "google_place_id": null },
+    "luxe-at-alewife":             { "apartments_com_url": null, "google_place_id": null },
+    "hanover-alewife":             { "apartments_com_url": null, "google_place_id": null },
+    "fuse-cambridge":              { "apartments_com_url": null, "google_place_id": null },
+    "windsor-at-cambridge-park":   { "apartments_com_url": null, "google_place_id": null },
+    "atmark":                      { "apartments_com_url": null, "google_place_id": null },
+    "tempo-cambridge":             { "apartments_com_url": null, "google_place_id": null },
+    "linea-cambridge":             { "apartments_com_url": null, "google_place_id": null },
+    "park77-apartments":           { "apartments_com_url": null, "google_place_id": null },
+    "the-wyeth":                   { "apartments_com_url": null, "google_place_id": null },
+    "fresh-pond-apartments":       { "apartments_com_url": null, "google_place_id": null },
+    "clarendon-hill-towers":       { "apartments_com_url": null, "google_place_id": null },
+    "vox-on-two":                  { "apartments_com_url": null, "google_place_id": null },
+    "the-royal-belmont":           { "apartments_com_url": null, "google_place_id": null },
+    "brentwood-apartments":        { "apartments_com_url": null, "google_place_id": null },
+    "the-legacy-at-arlington-center": { "apartments_com_url": null, "google_place_id": null },
+    "brigham-square":              { "apartments_com_url": null, "google_place_id": null },
+    "arlington-360":               { "apartments_com_url": null, "google_place_id": null }
+  }
+}

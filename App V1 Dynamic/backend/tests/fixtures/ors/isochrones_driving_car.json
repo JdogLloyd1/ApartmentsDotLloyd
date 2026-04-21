@@ -1,0 +1,38 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"value": 120, "center": [-71.1530, 42.3995]},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-71.156, 42.401], [-71.150, 42.401], [-71.150, 42.398],
+          [-71.156, 42.398], [-71.156, 42.401]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"value": 300, "center": [-71.1530, 42.3995]},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-71.162, 42.405], [-71.144, 42.405], [-71.144, 42.394],
+          [-71.162, 42.394], [-71.162, 42.405]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"value": 600, "center": [-71.1530, 42.3995]},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-71.175, 42.410], [-71.130, 42.410], [-71.130, 42.385],
+          [-71.175, 42.385], [-71.175, 42.410]
+        ]]
+      }
+    }
+  ]
+}

@@ -205,3 +205,27 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- Alewife project-specific ---
+# Real environment files (only .env.example is committed)
+.env
+App V1 Dynamic/.env
+App V1 Dynamic/backend/.env
+
+# Local virtualenv
+.venv/
+
+# SQLite databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Playwright artifacts
+playwright-report/
+test-results/
+
+# Cache folders
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/

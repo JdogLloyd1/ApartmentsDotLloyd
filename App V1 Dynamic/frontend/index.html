@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alewife Apartment Intelligence Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="styles.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script src="app.js" type="module" defer></script>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Alewife Apartment Intelligence</h1>
+    <div class="subtitle">Cambridge &middot; Somerville &middot; Arlington &middot; Belmont &mdash; Red Line &amp; Route 2 Corridor</div>
+  </div>
+  <span class="badge badge-blue" id="buildingCountBadge">Loading&hellip;</span>
+  <span class="badge badge-red">Route 2 Access</span>
+  <span class="badge badge-green">Live Pricing</span>
+  <span class="badge badge-muted" id="freshnessChip" title="Time since the last cache refresh">Freshness: &mdash;</span>
+  <button type="button" id="refreshButton" class="header-action" hidden>Refresh now</button>
+</header>
+
+<div class="legend-bar">
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.55);border:1.5px solid #58a6ff;"></div> 5-min walk isochrone</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.3);border:1px solid #3d8fd9;"></div> 10-min walk</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(88,166,255,0.15);border:1px solid #2a6fa8;border-style:dashed;"></div> 15-min walk</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.45);border:1.5px solid #f85149;"></div> 2-min drive to Rt. 2</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.25);border:1px solid #c4403a;"></div> 5-min drive</div>
+  <div class="legend-item"><div class="lswatch" style="background:rgba(248,81,73,0.1);border:1px solid #8a2c28;border-style:dashed;"></div> 10-min drive</div>
+  <div class="legend-sep"></div>
+  <div class="legend-item">Alewife T &nbsp;|&nbsp; Rt. 2 on-ramp &nbsp;|&nbsp; Apartments (score color)</div>
+</div>
+
+<div id="map-container">
+  <div id="map"></div>
+</div>
+
+<div class="controls">
+  <div><label for="sortSelect">Sort by</label>
+    <select id="sortSelect">
+      <option value="score">Score</option>
+      <option value="rating">Rating</option>
+      <option value="walk">Walk to T</option>
+      <option value="drive">Drive to Rt.2</option>
+      <option value="price1br">1BR Price</option>
+      <option value="name">Name</option>
+    </select>
+  </div>
+  <div><label for="maxWalk">Max Walk</label><input type="number" id="maxWalk" value="30" min="1" max="60" style="width:65px"></div>
+  <div><label for="maxDrive">Max Drive</label><input type="number" id="maxDrive" value="15" min="1" max="30" style="width:65px"></div>
+  <div><label for="maxPrice">Max 1BR $</label><input type="number" id="maxPrice" value="4000" step="100" style="width:85px"></div>
+  <div class="sort-note">Click any column header to sort &middot; Click a row to jump to its map marker</div>
+</div>
+
+<div class="table-section">
+  <div class="section-heading">Building Directory</div>
+  <div class="section-sub" id="sectionSub">Loading live data&hellip;</div>
+  <div class="table-wrapper">
+    <table id="aptTable">
+      <thead><tr>
+        <th data-sort="name">Building</th>
+        <th data-sort="address">Address</th>
+        <th data-sort="rating">Rating</th>
+        <th>Overview</th>
+        <th>Amenities</th>
+        <th data-sort="studio">Studio</th>
+        <th data-sort="price1br">1 BR</th>
+        <th data-sort="price2br">2 BR</th>
+        <th data-sort="walk">Walk to T</th>
+        <th data-sort="drive">Drive Rt.2</th>
+        <th>Leasing</th>
+        <th data-sort="score">Score</th>
+      </tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<footer>
+  <div><strong>Walk isochrones</strong> from Alewife MBTA (42.3954, -71.1426) &mdash; road-network shaped polygons, 80m/min avg pace</div>
+  <div><strong>Drive isochrones</strong> from Rt. 2 / Concord Tpke on-ramp (42.3995, -71.153)</div>
+  <div><strong>Prices</strong> from apartments.com, apartmentlist.com &mdash; verify with leasing offices</div>
+  <div><strong>Score</strong> composite: cost (30%), Google rating (25%), walk time (25%), drive time (20%)</div>
+</footer>
+
+</body>
+</html>
