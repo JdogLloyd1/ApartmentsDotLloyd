@@ -1,0 +1,101 @@
+---
+alwaysApply: false
+---
+
+# Module-to-Date Mapping
+
+> Map all modules, homeworks, tools, and events to dates. All modules are consecutively numbered 0-12.
+
+## Course Dates
+
+- **First Day of Class**: Tuesday, January 21, 2026
+- **Last Day of Class**: Monday, May 5, 2026
+
+## Module Schedule (Consecutive Numbering 0-12)
+
+### Module 0: Data Science Quickstart
+- **Folder**: `00_quickstart`
+- **Date Range**: Monday, 1/19 ~ Sunday, 1/25, 2026
+- **Due Date**: Monday, January 26, 2026 at 9:00 AM
+
+### Module 1: API Queries
+- **Folder**: `01_query_api`
+- **Date Range**: Monday, 1/26 ~ Sunday, 2/1, 2026
+- **Due Date**: Monday, February 2, 2026 at 9:00 AM
+
+### Module 2: AI for Productivity
+- **Folder**: `02_productivity`
+- **Date Range**: Monday, 2/2 ~ Sunday, 2/8, 2026
+- **Due Date**: Monday, February 9, 2026 at 9:00 AM
+- **BREAK**: 02/14 - 02/17 (February Break)
+
+### Module 3: AI API Calls
+- **Folder**: `03_query_ai`
+- **Date Range**: Monday, 2/16 ~ Sunday, 2/22, 2026
+- **Due Date**: Monday, February 23, 2026 at 9:00 AM (skips break week)
+- **HOMEWORK 1**: Monday, February 23, 2026 at 9:00 AM (same date as module)
+
+### Module 4: Deploying Apps
+- **Folder**: `04_deployment`
+- **Date Range**: Monday, 2/23 ~ Sunday, 3/1, 2026
+- **Due Date**: Monday, March 2, 2026 at 9:00 AM
+- **TOOL 1 (App V1)**: Monday, March 2, 2026 at 9:00 AM (same date as module)
+
+### Module 5: AI Systems Hackathon
+- **Folder**: `05_hackathon`
+- **Date**: Friday, March 6, 3:30 PM EST - Saturday, March 7, 3:30 PM EST
+- **Note**: NO HOMEWORK THIS WEEKEND - date cannot change
+
+### Module 6: Agents and Prompt Engineering
+- **Folder**: `06_agents`
+- **Date Range**: Monday, 3/9 ~ Sunday, 3/15, 2026
+- **Due Date**: Monday, March 16, 2026 at 9:00 AM
+
+### Module 7: Retrieval Augmented Generation
+- **Folder**: `07_rag`
+- **Date Range**: Monday, 3/16 ~ Sunday, 3/22, 2026
+- **Due Date**: Monday, March 23, 2026 at 9:00 AM
+
+### Module 8: Function Calling with AI
+- **Folder**: `08_function_calling`
+- **Date Range**: Monday, 3/23 ~ Sunday, 3/29, 2026
+- **Due Date**: Monday, March 30, 2026 at 9:00 AM (activities due end of week before break)
+- **HOMEWORK 2**: Monday, April 6, 2026 at 9:00 AM (due after spring break)
+- **TOOL 2 (App V2)**: Monday, April 13, 2026 at 9:00 AM (1 week after HOMEWORK 2)
+
+### Spring Break
+- **BREAK**: 03/28 - 04/05 (Spring Break)
+
+### Module 9: AI for Text Analysis
+- **Folder**: `09_text_analysis`
+- **Date Range**: Monday, 4/6 ~ Sunday, 4/12, 2026
+- **Due Date**: Monday, April 13, 2026 at 9:00 AM
+- **HOMEWORK 2**: Monday, April 6, 2026 at 9:00 AM (also listed under Module 8)
+- **TOOL 2 (App V2)**: Monday, April 13, 2026 at 9:00 AM (also listed under Module 8)
+
+### Module 10: AI for Data Management
+- **Folder**: `10_data_management`
+- **Date Range**: Monday, 4/13 ~ Sunday, 4/19, 2026
+- **Due Date**: Monday, April 20, 2026 at 9:00 AM
+
+### Module 11: AI for Decision-Making
+- **Folder**: `11_decision_support`
+- **Date Range**: Monday, 4/21 ~ Sunday, 4/26, 2026
+- **Due Date**: Monday, April 26, 2026 at 9:00 AM
+
+### Module 12: Finale
+- **Folder**: `12_end`
+- **Date Range**: Monday, 4/27 ~ Sunday, 5/5, 2026
+- **Due Date**: N/A (special topics module)
+- **TOOL 3 (App V3 / Presentation)**: Monday, May 4, 2026 at 9:00 AM (fixed date)
+- **HOMEWORK 3**: Monday, May 11, 2026 at 9:00 AM (fixed date, finals week)
+
+## Notes
+
+- All module due dates are Mondays at 9:00 AM unless otherwise specified
+- Date ranges are Monday to Sunday of the week before the due date
+- HOMEWORK and TOOL assignments are part of their respective modules, not separate modules
+- Module 5 (Hackathon) is a special event, not a content module
+- Module 12 (Finale) is a special topics module with student-selected content
+- Spring Break is a separate intermission period (03/28 - 04/05)
+- HOMEWORK 2 and TOOL 2 are listed under both Module 8 and Module 9 in the schedule

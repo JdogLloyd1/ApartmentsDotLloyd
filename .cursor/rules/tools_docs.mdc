@@ -1,0 +1,356 @@
+---
+description: Always apply to TOOL markdown files
+alwaysApply: false
+---
+# TOOL_ Documentation Rules
+
+## File Naming Convention
+- **TOOL** prefix: Formal tool assignments that require building and deploying applications (e.g., `TOOL1.md`, `TOOL2.md`)
+- Tools are group assignments that build cumulatively towards a complete AI-powered application
+- Each TOOL represents a version of the application (V1, V2, V3) with increasing complexity
+
+---
+
+## Common Structure
+
+### Required Header Format
+```markdown
+# 📌 TOOL
+
+## App V[X]: [App Name/Description]
+
+🕒 *Estimated Time: X hours*
+```
+
+### Required Footer Format
+```markdown
+![](../docs/images/homework.png)
+
+---
+
+← 🏠 [Back to Top](#TOOL)
+```
+
+**Note**: The footer image path should be adjusted based on file location. Use relative path to `docs/images/homework.png`.
+
+---
+
+## TOOL_ Files (Tool Assignments)
+
+### Purpose
+Group assignments that require teams to build and deploy working AI-powered applications. Each TOOL builds on previous versions, adding new capabilities and complexity. Tools must be deployed and accessible online.
+
+### Key Characteristics
+- **Group assignment** (not individual like HOMEWORK)
+- **Deployment required** - app must be deployed and accessible online
+- **Simple checklist format** for app requirements
+- **Cursor encouraged** - explicitly mention using Cursor for coding
+- **AI allowed** - for documentation (unlike HOMEWORK writing components)
+- **Cumulative** - later versions build on earlier versions
+
+### Structure Template
+```markdown
+# 📌 TOOL
+
+## App V[X]: [App Name/Description]
+
+🕒 *Estimated Time: X hours*
+
+---
+
+## 📋 Tool Overview
+
+[Brief description of what to build/deploy. Explain if this builds on a previous version.]
+
+This tool [compiles work from / builds on App V[X-1] and adds work from]:
+- [`LAB_file.md`](path/to/LAB_file.md) - [Description]
+- [Additional LAB files or activities]
+
+**Note**: This is a **group assignment**. [Any specific notes about team coordination, API selection, etc.]
+
+---
+
+## 📝 Instructions
+
+### Who?
+Group assignment - 1 app per team.
+
+### What?
+[One sentence describing what to build/deploy. Must emphasize deployment requirement.] **Submit a single .docx file.**
+
+### Why?
+[One sentence explaining the purpose and what it demonstrates.]
+
+---
+
+## ✅ Your App Must Have
+
+Your [deployed/enhanced] ShinyApp must include:
+
+- [ ] **[Feature 1]**: [Description]
+- [ ] **[Feature 2]**: [Description]
+  - [ ] **Sub-feature**: [Description]
+- [ ] **Deployment**: App is deployed and accessible online (DigitalOcean, Posit Cloud Connect, or Posit Connect)
+- [ ] **Password Protection** (if needed): [Description]
+
+---
+
+## 📤 To Submit
+
+Your submission should include:
+
+- [ ] **🔗 [X pts] Deployed App Link**: Working link to your deployed app. The link **must work** and be accessible.
+- [ ] **📊 [X pts] Functional App**: [Description of functional requirements]
+- [ ] **📝 [X pts] App Description [and Documentation]**: [Description requirements]
+  - **📝 [X pts] Description**: [Requirements]
+  - **🛠️ [X pts] Process Diagram**: [Requirements]
+  - **📚 [X pts] Technical Documentation** (if applicable): [Requirements]
+  - [ ] **👥 [X pts] Team Members by Role**: List of team members and their roles. (Note: *everyone* is a developer here.) Suggested developer roles include:
+    - [List of developer roles]
+
+**Total: 100 pts**
+
+---
+
+## ⚠️ Important Notes
+
+- **Deployment Required**: [Deployment requirement details]
+- [Additional important notes]
+
+---
+
+Submit via Canvas by the due date specified in the course schedule.
+
+---
+
+![](../docs/images/homework.png)
+
+---
+
+← 🏠 [Back to Top](#TOOL)
+```
+
+### Content Guidelines
+- **Concise**: Keep descriptions brief and direct
+- **Deployment-focused**: Always emphasize deployment requirement
+- **Checklist format**: Use simple checklists for app requirements
+- **Value-oriented**: Emphasize value for stakeholders (especially in later versions)
+- **Cumulative**: Reference previous versions when applicable
+
+### Common Sections
+- **"Tool Overview"** - What to build and what it compiles/builds on
+- **"Instructions"** - Who, What, Why (each one sentence)
+- **"Your App Must Have"** - Checklist of required features
+- **"To Submit"** - Submission requirements with point allocation
+- **"Important Notes"** - Key reminders and requirements
+
+### Point Allocation
+- **Total tool points: 100 pts**
+- Common breakdown:
+  - Deployed App Link: 10-25 pts
+  - Functional App: 50-60 pts (often with sub-points for specific features)
+  - App Description/Documentation: 25-30 pts
+  - Team Members by Role: 0-5 pts (often 0 pts in later versions)
+- Point values should sum to 100 pts
+- Use consistent formatting: `[X pts]` for point values
+
+### Team Roles
+All roles should be developer/engineer focused. Common roles include:
+- 🧪 Project Manager: System architecture, system integration, performance testing, deployment
+- 🔌 Backend Developer: API integration, data processing, and data pipeline
+- 🎨 Frontend Developer: UI/UX design, reactive components, and visual design
+- 🤖 Prompt Engineer: AI integration, prompt engineering, and AI-powered insights
+- 🤖 Agent Orchestration Engineer: Manage orchestration of agents, content pipeline
+- 🛠️ Database Engineer: Manage database and RAG operations
+- 📊 Data Engineer: Statistical analysis, data transformations, and visualizations
+- 🚀 DevOps Engineer: Deployment, testing, and performance optimization
+- 📊 Full Stack Developer: Integration across components, reactive text, and value boxes
+- 🧪 QA Engineer: Quality assurance, testing, and validation
+
+**Note**: Always emphasize that *everyone* is a developer.
+
+---
+
+## Formatting Standards
+
+### Icons Usage
+- **📌** for the main header (TOOL)
+- **🕒** for time estimates
+- **✅** for requirement sections ("Your App Must Have")
+- **📋** for overviews
+- **📝** for instructions and descriptions
+- **🔗** for links (deployed app links)
+- **📊** for functional app requirements
+- **🛠️** for process diagrams
+- **📚** for documentation
+- **📤** for submission sections
+- **⚠️** for important notes
+- **👥** for team members
+
+### Text Formatting
+- **Bold** for:
+  - Key terms and concepts
+  - Important file names
+  - App names and versions
+  - Required features
+  - Emphasis on critical information
+- *Italics* for:
+  - Time estimates
+  - Subtle emphasis
+- `Inline code` for:
+  - File names
+  - Commands
+  - Code snippets
+  - Function names
+  - Technical terms
+
+### File References
+- **Always** use relative hyperlinks: [`filename.ext`](relative/path/to/file.ext)
+- Link to images: `![Alt Text](relative/path/to/image.png)`
+- Link to LAB files when referencing them: [`LAB_name.md`](path/to/LAB_name.md)
+- **Deployment platforms**: Mention DigitalOcean, Posit Cloud Connect, or Posit Connect
+
+### Lists
+- Use `- [ ]` for required features checklist items
+- Use `-` for informational items or role lists
+- Use nested lists for sub-features
+- Add icons to list items when helpful
+
+---
+
+## Writing Style
+
+### Tone
+- **Concise**: Get to the point quickly
+- **Direct**: State requirements clearly and directly
+- **Clear**: Specify exactly what students need to build
+- **Supportive**: Acknowledge that this is a group effort
+
+### Clarity
+- Explain what the app should do
+- Specify all required features clearly
+- Provide examples when helpful
+- Use simple language; define jargon inline
+
+### Examples to Avoid
+```markdown
+❌ It is critical that you complete this step.
+❌ Obviously, you should include deployment.
+❌ As you can see, this is important.
+```
+
+### Examples to Use
+```markdown
+✅ Your app must be deployed and accessible online.
+✅ Include a working link to your deployed app.
+✅ Use AI to help create comprehensive documentation if needed.
+```
+
+---
+
+## Version-Specific Guidelines
+
+### App V1 (TOOL1)
+- Initial deployment
+- Basic features: API integration, AI insights, ShinyApp
+- Focus on getting app deployed and working
+- Documentation: NOT AI-generated (student-written)
+
+### App V2 (TOOL2)
+- Refinement of V1
+- Must add: Agentic Orchestration AND (RAG OR Tool Calling)
+- Emphasis on value for stakeholders
+- Documentation: AI is allowed (system is bigger)
+- Submission: Link to GitHub repo + live app link
+
+### App V3 (TOOL3)
+- Final version with presentation
+- [To be defined based on requirements]
+
+---
+
+## Checklist for TOOL Creation
+
+When creating or editing a TOOL, ensure:
+- [ ] Header: `# 📌 TOOL`
+- [ ] Title: `## App V[X]: [Description]`
+- [ ] Time estimate: `🕒 *Estimated Time: X hours*`
+- [ ] Tool Overview section explaining what to build
+- [ ] Instructions section with Who, What, Why
+- [ ] "Your App Must Have" checklist section
+- [ ] Submission section with point allocation totaling 100 pts
+- [ ] Important Notes section
+- [ ] Footer image: `![](../docs/images/homework.png)` (adjusted for file location)
+- [ ] Back to top link: `← 🏠 [Back to Top](#TOOL)`
+- [ ] All LAB references are hyperlinked
+- [ ] Deployment requirement emphasized
+- [ ] Cursor usage mentioned
+- [ ] AI policy for documentation clearly stated
+- [ ] Team roles listed (all developers)
+- [ ] Uses icons and formatting appropriately
+- [ ] Tone is concise and direct
+
+---
+
+## Footer Path Adjustment
+
+The footer image path must be adjusted based on file location:
+
+- Files in `docs/`: `![](images/homework.png)`
+- Files one level deep (e.g., `04_deployment/`, `08_function_calling/`): `![](../docs/images/homework.png)`
+- Files two levels deep: `../../docs/images/homework.png`
+- Always use relative path to `docs/images/homework.png`
+
+---
+
+## Relationship to HOMEWORK Assignments
+
+### Key Differences
+- **TOOL**: Group assignment, deployment required, AI allowed for documentation
+- **HOMEWORK**: Individual assignment, compilation of LABS, writing NOT AI-generated
+
+### Similarities
+- Both use similar structure (Overview, Instructions, Requirements, Submission)
+- Both total 100 pts
+- Both use same footer format
+- Both reference LAB files
+
+---
+
+## Submission Format
+
+### Standard Submission (V1)
+- Submit a single .docx file
+- Include all required components
+- Links must be working and accessible
+
+### Enhanced Submission (V2+)
+- Submit a single .docx file containing:
+  - Link to GitHub repository main page (contains all documentation)
+  - Link to live app
+  - Clear instructions on where to find answers to questions
+- Make it very clear where instructor should look for documentation
+
+---
+
+## Common Requirements Across Versions
+
+### Always Required
+- **Deployment**: App must be deployed and accessible online
+- **Working Link**: Deployed app link must work
+- **Functional App**: App must run meaningful analysis
+- **Documentation**: Sufficient documentation required
+
+### Version-Specific Additions
+- **V1**: Basic features (API, AI, ShinyApp)
+- **V2**: Agentic Orchestration + (RAG OR Tool Calling)
+- **V3**: [To be defined]
+
+---
+
+## AI Usage Policy
+
+- **V1**: Documentation NOT AI-generated (student-written)
+- **V2+**: AI is allowed for documentation (system is bigger)
+- **Always**: AI can be used for coding - "I expect that the app will be good! :)"
+- **Always**: Cursor is expected and encouraged for coding support

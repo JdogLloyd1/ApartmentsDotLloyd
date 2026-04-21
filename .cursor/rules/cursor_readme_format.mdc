@@ -1,0 +1,212 @@
+---
+description: Cursor-oriented README content and structure for AI-assisted code generation
+globs: ["**/README*.md", "**/readme*.md", "**/PROJECT*.md"]
+alwaysApply: false
+---
+
+# Cursor-Oriented README Guide
+
+Use this rule when creating or editing READMEs (or project overview docs) that will be used as context by Cursor. The goal is to store **maximum useful information** so Cursor can generate and modify code correctly for this project.
+
+---
+
+## Table of Contents
+
+- [Purpose: Cursor as consumer](#purpose-cursor-as-consumer)
+- [What to include for Cursor](#what-to-include-for-cursor)
+- [Project structure & file references](#project-structure--file-references)
+- [Tech stack & environment](#tech-stack--environment)
+- [Conventions & patterns](#conventions--patterns)
+- [APIs and libraries](#apis-and-libraries)
+- [Code examples & file references](#code-examples--file-references)
+- [External documentation links](#external-documentation-links)
+- [Formatting for parseability](#formatting-for-parseability)
+- [Checklist for Cursor-oriented READMEs](#checklist-for-cursor-oriented-readmes)
+
+---
+
+## Purpose: Cursor as consumer
+
+- **Primary consumer**: Cursor (and similar AI tools) will use the README as context when answering questions, generating code, or refactoring.
+- **Goal**: Enable correct, project-consistent code by documenting structure, conventions, entry points, and where to look things up.
+- **Principle**: Prefer **explicit over implicit**. Name files, paths, and patterns so the model can resolve references without guessing.
+- **Complements**: A human-focused README can live in the same file; use clear section headers so both humans and Cursor can find what they need.
+
+---
+
+## What to include for Cursor
+
+Include these so Cursor can navigate and generate code reliably:
+
+- **Project summary**: One short paragraph—what the repo does and in what domain (e.g. "Data science course materials; Python and R scripts for APIs and agents").
+- **Repository layout**: Which folders and key files exist and their **role** (e.g. `01_query_api/` = first module, `04_lab_query.py` = lab entry point).
+- **Tech stack**: Languages, runtimes, key frameworks, and package managers (e.g. Python 3.11, R 4.x, `requirements.txt` vs `pyproject.toml`).
+- **Entry points**: Main scripts or apps to run, and in what order when relevant (e.g. "Run `01_ollama.sh` before Python scripts that call Ollama").
+- **Conventions**: Naming, coding style, where tests live, and pointer to project rules (e.g. `.cursor/rules/coding_style.mdc`).
+- **Environment & secrets**: What env vars or config files are needed (e.g. `API_KEY`, `.env`), without putting secrets in the README.
+- **APIs and libraries**: Which external APIs or core libraries are used, with links to their official docs.
+
+---
+
+## Project structure & file references
+
+Use **explicit paths and roles** so Cursor can open or reference the right files.
+
+- List directories and their purpose; call out files that are entry points or canonical examples.
+- Use consistent path format: relative to repo root, e.g. `01_query_api/04_lab_query.py`, not `./04_lab_query.py` when describing the project.
+- Reference other docs in the repo (e.g. `.cursor/rules/`, `docs/`) so Cursor knows where to find rules and specs.
+
+Example:
+
+```markdown
+## Project structure
+
+- `01_query_api/` — API query labs; start with [`03_mbta_api_test.py`](01_query_api/03_mbta_api_test.py) then [`04_lab_query.py`](01_query_api/04_lab_query.py).
+- `06_agents/` — Ollama-based agents; run [`01_ollama.sh`](06_agents/01_ollama.sh) before Python/R scripts.
+- `07_rag/` — RAG examples; data in `07_rag/data/`, entry scripts `02_txt.py` / `03_csv.py` / `04_sqlite.py`.
+- `.cursor/rules/` — Project rules (coding style, README format, tools). Cursor applies these when editing matching files.
+```
+
+---
+
+## Tech stack & environment
+
+Document runtimes and tooling so Cursor chooses correct syntax and commands.
+
+- **Languages & versions**: e.g. Python 3.11+, R 4.3+.
+- **Package management**: e.g. `pip install -r requirements.txt`, or `renv` for R.
+- **Env and config**: Required env vars; config file names and purpose (e.g. `.env` for API keys). Do not paste secrets.
+
+Example:
+
+```markdown
+## Tech stack
+
+- **Python**: 3.11+. Install deps: `pip install -r requirements.txt` (or per-folder if present).
+- **R**: 4.3+. Use `renv` in folders that contain `renv.lock`.
+- **Environment**: Copy `.env.example` to `.env` and set `MBTA_API_KEY`, `OPENAI_API_KEY` (or equivalent). See [MBTA API key](https://api-v3.mbta.com/portal).
+```
+
+---
+
+## Conventions & patterns
+
+Describe patterns Cursor should follow when generating or editing code.
+
+- **Naming**: e.g. "Scripts are numbered `01_`, `02_` for sequence; activities use `ACTIVITY_`, `LAB_` prefixes."
+- **Style**: Point to project rules, e.g. "Follow [`.cursor/rules/coding_style.mdc`](.cursor/rules/coding_style.mdc) for R and Python."
+- **File roles**: e.g. "Helper code lives in `functions.py` / `functions.R` per folder; scripts in that folder import from them."
+
+Example:
+
+```markdown
+## Conventions
+
+- Numbered scripts (`01_*.py`, `02_*.py`) indicate run order within a folder.
+- Shared helpers: [`functions.py`](06_agents/functions.py) and [`functions.R`](06_agents/functions.R) in each module.
+- Coding style: see [`.cursor/rules/coding_style.mdc`](.cursor/rules/coding_style.mdc). Use it when generating or editing `.R` and `.py` files.
+```
+
+---
+
+## APIs and libraries
+
+List external services and core libraries with **official doc links**. Cursor can use these to look up correct APIs and function signatures.
+
+- **APIs**: Name the service and link to its API reference or getting-started page.
+- **Libraries**: Name the library and link to docs (e.g. Requests, httr, ollama Python client).
+
+Example:
+
+```markdown
+## APIs and libraries
+
+- **MBTA API**: [MBTA V3 API](https://api-v3.mbta.com/docs/swagger/index.html); used in `01_query_api/`.
+- **Ollama**: [Ollama API](https://github.com/ollama/ollama/blob/main/docs/api.md); Python usage in [`02_using_ollama.py`](06_agents/02_using_ollama.py).
+- **Python HTTP**: [Requests](https://requests.readthedocs.io/en/latest/). **R HTTP**: [httr](https://httr.r-lib.org/).
+```
+
+---
+
+## Code examples & file references
+
+Where helpful, include **short code snippets** that show project-specific usage, and **reference the real file** so Cursor can read full context.
+
+- Prefer one canonical example per concept (e.g. "how we call the MBTA API in this project").
+- Put the snippet in a fenced code block with language; below or above it, link to the file: e.g. "See [`01_query_api/04_lab_query.py`](01_query_api/04_lab_query.py) for the full script."
+- For env or config, show the pattern without real keys.
+
+Example:
+
+```markdown
+## Example: calling the API (Python)
+
+This project uses a single module for the MBTA client and reads the key from the environment:
+
+\`\`\`python
+import os
+import requests
+
+API_KEY = os.environ.get("MBTA_API_KEY")
+url = "https://api-v3.mbta.com/vehicles?filter[route]=1"
+r = requests.get(url, headers={"x-api-key": API_KEY})
+\`\`\`
+
+Full script: [`01_query_api/04_lab_query.py`](01_query_api/04_lab_query.py). API reference: [MBTA V3 API](https://api-v3.mbta.com/docs/swagger/index.html).
+```
+
+---
+
+## External documentation links
+
+Provide stable links so Cursor (and developers) can resolve API and library details.
+
+- **API docs**: Official REST/GraphQL docs, Swagger/OpenAPI URLs when available.
+- **Libraries**: Official "Getting started" or "Reference" for each major library used in the repo.
+- **Tools**: Cursor rules, Markdown, or tooling docs if they affect how the project is documented or built.
+
+Suggested link section:
+
+```markdown
+## Reference links
+
+| Resource | URL |
+|----------|-----|
+| MBTA V3 API | https://api-v3.mbta.com/docs/swagger/index.html |
+| Ollama API | https://github.com/ollama/ollama/blob/main/docs/api.md |
+| Python Requests | https://requests.readthedocs.io/en/latest/ |
+| R httr | https://httr.r-lib.org/ |
+| CommonMark (Markdown) | https://commonmark.org/help/ |
+```
+
+---
+
+## Formatting for parseability
+
+Use consistent structure so Cursor can locate sections reliably.
+
+- **Headers**: One `#` for the document title; `##` for major sections; `###` for subsections. Use the same section names across READMEs when possible (e.g. "Project structure", "Tech stack", "APIs and libraries").
+- **Lists**: Use bullets for options or roles; numbered lists for steps or sequence.
+- **Paths**: Use repo-relative paths in links, e.g. `[04_lab_query.py](01_query_api/04_lab_query.py)`.
+- **Code**: Fenced blocks with language tag; keep snippets short and point to the real file for full context.
+
+---
+
+## Checklist for Cursor-oriented READMEs
+
+When writing or updating a README for Cursor:
+
+- [ ] Short project summary at the top.
+- [ ] Project structure section with paths and roles of key dirs/files.
+- [ ] Tech stack (languages, package managers, env/config needs).
+- [ ] Entry points and run order when relevant.
+- [ ] Conventions and pointer to `.cursor/rules/` or style docs.
+- [ ] APIs and libraries with official doc links.
+- [ ] At least one code example with a file reference; more for complex flows.
+- [ ] Reference links section (table or list) for APIs and main libraries.
+- [ ] Consistent `##` / `###` headers and repo-relative paths in links.
+- [ ] No secrets; only env var names and config file names.
+
+---
+
+← [Back to top](#cursor-oriented-readme-guide)

@@ -1,0 +1,404 @@
+---
+description: Always apply when making .R or .py files
+alwaysApply: false
+---
+# Coding Style Rules for Tutorial Scripts
+
+## Target Audience
+- Graduate students in systems engineering
+- Some prior coding experience in Python or R
+- New to Git, AI, API queries, and related technologies
+- Code should be educational, clear, and easy to follow
+
+## General Principles
+
+### Code Philosophy
+- **Simple code, clear code**: Prioritize readability and understanding over cleverness
+- **Brief summaries**: Keep explanations concise and to the point
+- **Frequent commenting**: Comment liberally to explain what and why
+- **Educational focus**: Code serves as a learning tool, not just a solution
+
+### Package Preferences
+
+**R:**
+- Prefer **tidyverse** packages: `dplyr`, `readr`, `tidyr`, `ggplot2`
+- Use pipelines (`%>%`) for data manipulation
+- Use `readr::read_csv()` instead of base `read.csv()`
+- Use `dplyr` functions (`select()`, `filter()`, `mutate()`, `arrange()`, `summarize()`) over base R equivalents
+- **Avoid the `dotenv` package**: Use the built-in `readRenviron()` function instead (e.g., `readRenviron(".env")`). No external package needed for loading `.env` files.
+
+**Python:**
+- Prefer **pandas** for data manipulation (tidyverse equivalent)
+- Use method chaining when it improves readability
+- Use `pandas.read_csv()` for data import
+- Prefer pandas operations over base Python loops when possible
+
+## File Structure
+
+### Header Section
+Every script should start with a brief header:
+
+**R:**
+```r
+#' @name script_name.R
+#' @title Brief Descriptive Title
+#' @author Prof. Tim Fraser
+#' @description
+#' Topic: [Topic Name]
+#' 
+#' Brief 2-3 sentence description of what this script teaches.
+#' What will students learn? Why is it useful?
+```
+
+**Python:**
+```python
+# script_name.py
+# Brief Descriptive Title
+# Pairs with [related material if applicable]
+# Tim Fraser
+
+# Brief 2-3 sentence description of what this script teaches.
+# What will students learn? Why is it useful?
+```
+
+### Section Organization
+
+**R:**
+```r
+# 0. SETUP ###################################
+
+## 0.1 Load Packages #################################
+
+library(dplyr) # for data wrangling
+library(readr) # for reading in data
+
+## 0.2 Load Data ####################################
+
+# Brief explanation of the data
+data = read_csv("path/to/data.csv")
+```
+
+**Python:**
+```python
+# 0. Setup #################################
+
+## 0.1 Load Packages ############################
+
+import pandas as pd # for data manipulation
+import numpy as np # for numerical operations
+
+## 0.2 Load Data ###############################
+
+# Brief explanation of the data
+data = pd.read_csv("path/to/data.csv")
+```
+
+## Commenting Guidelines
+
+### Comment Frequency
+- **Comment liberally**: Add comments for every major section and non-obvious operations
+- **Explain the "why"**: Don't just describe what the code does, explain why it's useful or what concept it demonstrates
+- **Brief but informative**: Keep comments concise but meaningful
+
+### Comment Types
+
+**Section Headers:**
+```r
+# 1. Data Wrangling ###################################
+```
+
+**Explanatory Comments:**
+```r
+# The dplyr package gives us several helpful functions 
+# which we can pair with pipelines to make life easier.
+```
+
+**Inline Comments:**
+```r
+flights %>%
+  select(dep_time, sched_dep_time) # Select only these two columns
+```
+
+**Learning Checks:**
+```r
+## LC 1 #################################################
+
+# Learning Check:
+# What does a row refer to in the 'flights' dataset? 
+# What does a row mean in the 'weather' dataset?
+```
+
+### Comment Style
+- Use `#` for single-line comments
+- Use `##` for subsection headers
+- Use `###` for major section headers
+- Keep comments brief (1-3 sentences typically)
+- Explain concepts, not just syntax
+
+## Code Style
+
+### R Style
+
+**Assignment:**
+- Always use `=` for assignment (not `<-`)
+- Example: `data = read_csv("file.csv")`
+
+**Line Length & Formatting:**
+- **Prefer single-line code** when it's concise and readable (typically under ~100 characters)
+- Keep simple if-else statements, single function calls, and short assignments on one line
+- Break across multiple lines when code becomes hard to read or exceeds reasonable length
+- Example (preferred single-line):
+```r
+if (file.exists(".env")){  readRenviron(".env")  } else {  warning(".env file not found. Make sure it exists in the project root.") }
+```
+- Example (multi-line when needed):
+```r
+if (file.exists(".env")) {
+  load_dot_env()
+} else {
+  warning(".env file not found. Make sure it exists in the project root.")
+}
+```
+
+**Pipelines:**
+- **Always use pipelines** (`%>%`) when working with tidyverse functions
+- Break pipelines across multiple lines for readability
+- Example:
+```r
+flights %>%
+  filter(dep_delay > 0) %>%
+  select(month, day, dep_delay) %>%
+  arrange(desc(dep_delay))
+```
+
+**Function Calls:**
+- Prefer tidyverse functions: `select()`, `filter()`, `mutate()`, `arrange()`, `summarize()`
+- Use `readr::read_csv()` instead of `read.csv()`
+- Use `dplyr::glimpse()` to view data structure
+
+**Variable Naming:**
+- Use lowercase with underscores: `my_data`, `dep_delay`
+- Use descriptive names: `flights_delayed` not `fd`
+
+### Python Style
+
+**Assignment:**
+- Use `=` for assignment
+- Example: `data = pd.read_csv("file.csv")`
+
+**Line Length & Formatting:**
+- **Prefer single-line code** when it's concise and readable (typically under ~100 characters)
+- Keep simple if-else statements, single function calls, and short assignments on one line
+- Break across multiple lines when code becomes hard to read or exceeds reasonable length
+- Example (preferred single-line):
+```python
+if os.path.exists(".env"): load_dotenv() 
+else: print(".env file not found. Make sure it exists in the project root.")
+```
+- Example (multi-line when needed):
+```python
+if os.path.exists(".env"):
+    load_dotenv()
+else:
+    print(".env file not found. Make sure it exists in the project root.")
+```
+
+**Method Chaining:**
+- Use method chaining when it improves readability
+- Break chains across multiple lines when long
+- Example:
+```python
+data = (pd.read_csv("file.csv")
+        .filter(items=['col1', 'col2'])
+        .query('value > 0')
+        .sort_values('col1'))
+```
+
+**Function Calls:**
+- Prefer pandas methods: `.filter()`, `.query()`, `.groupby()`, `.apply()`
+- Use `pd.read_csv()` for data import
+- Use `.head()`, `.info()`, `.describe()` to explore data
+
+**Variable Naming:**
+- Use lowercase with underscores: `my_data`, `dep_delay`
+- Use descriptive names: `flights_delayed` not `fd`
+
+## Code Examples
+
+### Good R Example
+```r
+# Load the flights dataset
+# This contains all flights departing NYC in 2013
+flights = read_csv("data/flights.csv")
+
+# Filter for delayed flights only
+# We use filter() to keep rows where dep_delay is positive
+delayed = flights %>%
+  filter(dep_delay > 0) %>%
+  select(month, day, dep_delay, origin) %>%
+  arrange(desc(dep_delay))
+```
+
+### Good Python Example
+```python
+# Load the flights dataset
+# This contains all flights departing NYC in 2013
+flights = pd.read_csv("data/flights.csv")
+
+# Filter for delayed flights only
+# We use query() to keep rows where dep_delay is positive
+delayed = (flights
+           .query('dep_delay > 0')
+           .filter(items=['month', 'day', 'dep_delay', 'origin'])
+           .sort_values('dep_delay', ascending=False))
+```
+
+## Learning Checks
+
+### When to Include
+- After introducing a new concept or function
+- Before moving to a more complex topic
+- To reinforce understanding of key concepts
+
+### Format
+```r
+## LC 1 #################################################
+
+# Learning Check:
+# Compare the following code chunks.
+# What does the select() function do?
+# Why do the contents of the select function matter?
+```
+
+## Function Definitions
+
+### R Functions
+```r
+# Calculate the mean of a vector
+# This function takes a numeric vector and returns its mean
+calculate_mean = function(x) {
+  sum(x) / length(x)
+}
+```
+
+### Python Functions
+```python
+# Calculate the mean of a series
+# This function takes a pandas Series and returns its mean
+def calculate_mean(x):
+    return x.sum() / len(x)
+```
+
+**Function Comments Should:**
+- Briefly describe what the function does
+- Explain parameters if not obvious
+- Note any important assumptions or limitations
+
+## Data Exploration
+
+### R
+```r
+# View the data structure
+glimpse(flights)
+
+# View first few rows
+head(flights)
+
+# View in separate window
+View(flights)
+```
+
+### Python
+```python
+# View the data structure
+data.info()
+
+# View first few rows
+data.head()
+
+# View summary statistics
+data.describe()
+```
+
+## Common Patterns
+
+### Data Import
+**R:**
+```r
+# Load data from CSV file
+# This dataset contains [brief description]
+data = read_csv("path/to/data.csv")
+```
+
+**Python:**
+```python
+# Load data from CSV file
+# This dataset contains [brief description]
+data = pd.read_csv("path/to/data.csv")
+```
+
+### Data Filtering
+**R:**
+```r
+# Filter for rows where value is greater than 0
+# This keeps only positive values
+filtered = data %>%
+  filter(value > 0)
+```
+
+**Python:**
+```python
+# Filter for rows where value is greater than 0
+# This keeps only positive values
+filtered = data.query('value > 0')
+```
+
+### Data Transformation
+**R:**
+```r
+# Create a new column by calculating the difference
+# This shows how much each value deviates from the mean
+transformed = data %>%
+  mutate(deviation = value - mean(value))
+```
+
+**Python:**
+```python
+# Create a new column by calculating the difference
+# This shows how much each value deviates from the mean
+transformed = data.assign(deviation = data['value'] - data['value'].mean())
+```
+
+## Writing Style for Comments
+
+### Tone
+- **Concise**: Get to the point quickly
+- **Educational**: Explain concepts, not just syntax
+- **Humble**: Don't assume expertise
+- **Direct**: State facts clearly
+
+### Avoid
+- Verbose explanations
+- Jargon without definition
+- Comments that just repeat the code
+- Phrases like "it is obvious" or "clearly"
+
+### Prefer
+- Brief, clear explanations
+- Context for why operations are useful
+- Simple language
+- Examples when helpful
+
+## Checklist for Scripts
+
+When creating or editing tutorial scripts, ensure:
+- [ ] Header with title, author, and brief description
+- [ ] Clear section organization with headers (###, ##, #)
+- [ ] Frequent comments explaining what and why
+- [ ] Uses tidyverse (R) or pandas (Python) style
+- [ ] Uses pipelines/chaining when appropriate
+- [ ] Variable names are descriptive
+- [ ] Code is simple and clear
+- [ ] Learning checks included where appropriate
+- [ ] Comments are brief but informative
+- [ ] File references use relative hyperlinks when mentioned in comments

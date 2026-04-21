@@ -1,0 +1,203 @@
+---
+globs: ["**/README*.md"]
+alwaysApply: false
+---
+# README and Markdown Documentation Rules
+
+## Target Audience
+- Graduate students in systems engineering
+- Some prior coding experience in Python or R
+- New to Git, AI, API queries, and related technologies
+- Write with clarity and patience; assume limited prior knowledge
+
+## Structure and Format
+
+### Required Template Structure
+Every README in a repository subfolder must follow the format defined in [`docs/prep/README_template.md`](docs/prep/README_template.md):
+
+1. **Header Section**
+   - Banner image with relative link (e.g., `![Banner Image](images/icons.png)`)
+   - Title: `# README '/folder/filename'`
+   - Brief 2-sentence topic description in blockquote
+
+2. **Table of Contents**
+   - Use relative anchor links to sections
+   - Include subsections with proper indentation
+   - **Primary purpose**: Show the order in which to complete activities/files
+   - List activities in numbered order when sequence matters
+
+3. **Main Content**
+   - **Keep it concise**: READMEs are navigation guides, not detailed instructions
+   - Use `##` for main sections
+   - Use `###` for subsections
+   - Maximum two heading levels
+   - Focus on what files exist and in what order to use them
+   - Avoid extensive descriptions; refer to individual files for details
+   - **Required structure**: Always include an "Activities" section and a "Readings" section in this format:
+     ```markdown
+     ## Activities
+     
+     Complete these activities in order:
+     
+     1. [ACTIVITY: Human-Readable Activity Name](ACTIVITY_name.md)
+         - [`related_file.sh`](related_file.sh) — brief description
+         - [`related_file.py`](related_file.py) — brief description
+     2. [READ: Human-Readable Reading Name](READ_name.md) — brief description (if part of workflow)
+     3. [ACTIVITY: Human-Readable Next Activity Name](ACTIVITY_next.md)
+     4. [LAB: Human-Readable Lab Name](LAB_name.md)
+     
+     ---
+     
+     ## Readings
+     
+     - [READ: Human-Readable Reading Name](READ_name.md) — brief description (if not in numbered sequence)
+     - Or: `- None.` if no standalone readings
+     ```
+   - **Activities section**: Numbered list showing sequence. Use human-readable names (titles from the activity/reading files) as link text with the appropriate prefix (ACTIVITY:, READ:, LAB:), with the actual filename as the URL. Include ACTIVITY_, READ_, and LAB_ files that are part of the workflow. Sub-items (indented with `-`) list related files like example scripts.
+   - **Readings section**: List any READ_ files that aren't part of the numbered sequence, or use `- None.` if there are no standalone readings. Use human-readable names with the READ: prefix as link text.
+
+4. **Footer Section**
+   - Footer image with relative link
+   - "Back to Top" link with home icon: `← 🏠 [Back to Top](#Table-of-Contents)`
+
+### File References
+- **Always** add relative hyperlinks when discussing files
+- **For ACTIVITY_, READ_, and LAB_ files in lists**: Use human-readable names (titles) as link text with the appropriate prefix, with the actual filename as the URL
+  - Format: `[ACTIVITY: Human-Readable Title](ACTIVITY_filename.md)`, `[READ: Human-Readable Title](READ_filename.md)`, `[LAB: Human-Readable Title](LAB_filename.md)`
+  - Example: `[ACTIVITY: Run Ollama Locally](ACTIVITY_ollama_local.md)` instead of ``[`ACTIVITY_ollama_local.md`](ACTIVITY_ollama_local.md)``
+  - Example: `[READ: Finding APIs](READ_find_apis.md)`
+  - Example: `[LAB: Build an AI-Powered Data Reporter](LAB_ai_reporter.md)`
+- **For code/script files**: Use the filename in backticks as link text
+  - Format: ``[`filename.ext`](relative/path/to/file.ext)``
+  - Example: See [`functions.R`](functions.R) for helper functions
+- For code blocks, reference the file above or below the block
+
+### Formatting Guidelines
+- **Use formatting frequently**: bold (**text**), italics (*text*), and underline when appropriate
+- **Bold** for emphasis on key terms, file names, or important concepts
+- *Italics* for subtle emphasis or alternative phrasing
+- Use inline code backticks for: file names, function names, commands, code snippets
+
+### Icon Usage
+- **Use icons frequently** throughout the document
+- Reference available icons in [`docs/prep/icons.md`](docs/prep/icons.md)
+- Use icons to:
+  - Mark section headers (e.g., `## 🚀 Deployment`)
+  - Highlight important notes (e.g., `🚨 Requirements`)
+  - Indicate actions (e.g., `✅ Complete`, `⚠️ Warning`)
+  - Add visual interest to lists and key points
+- Common patterns:
+  - 🚨 for critical/important sections
+  - ✅ for completed items or checklists
+  - ⚠️ for warnings or important notes
+  - 📚 for documentation sections
+  - 🔧 for technical/setup sections
+  - 💡 for tips or insights
+
+## Writing Style
+
+### Tone and Voice
+- **Concise**: Get to the point quickly; avoid unnecessary words
+- **Humble**: Don't assume expertise; explain concepts clearly
+- **Avoid blather**: Remove filler phrases and redundant explanations
+- **Never use phrases like**:
+  - "it is obvious"
+  - "it is critical"
+  - "clearly"
+  - "obviously"
+  - "as you can see"
+  - "it goes without saying"
+- Instead, state facts directly: "This step configures the API endpoint" rather than "It is critical that you configure the API endpoint"
+
+### Clarity for Beginners
+- Explain acronyms on first use: "REST API (Representational State Transfer Application Programming Interface)"
+- Break complex steps into numbered or bulleted lists
+- Provide context for why steps are needed when helpful
+- Use simple, direct language; avoid jargon when possible
+- When jargon is necessary, define it inline
+
+### Code Examples
+- Include practical, runnable code examples
+- Add comments in code to explain non-obvious steps
+- Reference the actual file when showing code snippets
+- Use appropriate syntax highlighting for code blocks
+
+## Content Organization
+
+### Sections Should Include
+- Clear, descriptive headings with icons when appropriate
+- Brief introductory text for each section
+- Step-by-step instructions when applicable
+- Examples and code snippets
+- Links to related files and resources
+- Troubleshooting tips when relevant
+
+### Lists and Checklists
+- Use checkboxes for actionable items: `- [ ] Task to complete`
+- Use bullet points for informational items
+- Use numbered lists for sequential steps
+- Add icons to list items when they enhance clarity
+
+## Examples
+
+### Good Activity/Reading/Lab Link Format
+```markdown
+1. [ACTIVITY: Run Ollama Locally](ACTIVITY_ollama_local.md)
+2. [ACTIVITY: Set Up Ollama API Key](ACTIVITY_ollama_api_key.md)
+3. [READ: Finding APIs](READ_find_apis.md)
+4. [LAB: Build an AI-Powered Data Reporter](LAB_ai_reporter.md)
+```
+
+### Avoid This Format
+```markdown
+1. [`ACTIVITY_ollama_local.md`](ACTIVITY_ollama_local.md)
+2. [Run Ollama Locally](ACTIVITY_ollama_local.md) (missing prefix)
+```
+
+### Good File Reference (for code/script files)
+```markdown
+See the [`plumber.R`](plumber.R) file for the API implementation.
+```
+
+### Good Section with Icon
+```markdown
+## 🚀 Deployment
+
+Follow these steps to deploy your application...
+```
+
+### Good Formatting
+```markdown
+**Important**: Make sure to set your API key in the `.env` file before running the script.
+```
+
+### Avoid This
+```markdown
+It is critical that you understand this concept, as it is obvious that...
+```
+
+### Use This Instead
+```markdown
+This concept is used throughout the course. Understanding it helps with...
+```
+
+## Checklist for README Creation
+
+When creating or editing a README, ensure:
+- [ ] Follows template structure from [`docs/prep/README_template.md`](docs/prep/README_template.md)
+- [ ] Includes banner and footer images with relative links
+- [ ] Has a complete Table of Contents with anchor links showing order of activities
+- [ ] **Concise and focused**: Acts as a navigation guide, not detailed instructions
+- [ ] **Activities section**: Numbered list (1., 2., 3., etc.) showing sequence
+  - [ ] Uses human-readable names (titles) as link text with appropriate prefixes (ACTIVITY:, READ:, LAB:) for ACTIVITY_, READ_, and LAB_ files
+  - [ ] Includes ACTIVITY_, READ_, and LAB_ files that are part of the workflow
+  - [ ] Sub-items (indented with `-`) list related files like example scripts
+  - [ ] Each item has a brief description after the link (if needed)
+- [ ] **Readings section**: Lists READ_ files not in numbered sequence with READ: prefix, or `- None.`
+- [ ] All file references include relative hyperlinks
+- [ ] Uses icons frequently and appropriately
+- [ ] Uses bold, italics, and formatting effectively
+- [ ] Tone is concise and humble (no "obvious" or "critical" phrases)
+- [ ] Content is appropriate for graduate students new to Git/AI/APIs
+- [ ] Avoids extensive descriptions; refers to individual files for details
+- [ ] Includes "Back to Top" link in footer

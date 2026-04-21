@@ -1,0 +1,325 @@
+---
+description: Always apply to HOMEWORK markdown files
+alwaysApply: false
+---
+# HOMEWORK_ Documentation Rules
+
+## File Naming Convention
+- **HOMEWORK_** prefix: Formal homework assignments that compile results from several recent ACTIVITIES (e.g., `HOMEWORK_1.md`, `HOMEWORK_2.md`)
+- Homeworks are concise compilation assignments that showcase individual progress over the last 2-3 weeks
+- Each LAB represents the next step of a student's project, and homeworks compile these LABS into a cohesive showcase
+
+---
+
+## Common Structure
+
+### Required Header Format
+```markdown
+# 📌 HOMEWORK
+
+## [Homework Name/Number]
+
+🕒 *Estimated Time: X hours*
+```
+
+### Required Footer Format
+```markdown
+![](../../docs/images/homework.png)
+
+---
+
+← 🏠 [Back to Top](#HOMEWORK)
+```
+
+**Note**: The footer image path should be adjusted based on file location. Use relative path to `docs/images/homework.png`.
+
+---
+
+## HOMEWORK_ Files (Homework Assignments)
+
+### Purpose
+Concise compilation assignments that showcase individual progress over the last 2-3 weeks. Students demonstrate their work by compiling deliverables from their LABS. Each homework requests a specific deliverable (e.g., an **AI-powered reporter software**) that represents the culmination of their activities so far.
+
+### Structure Template
+```markdown
+# 📌 HOMEWORK
+
+## [Homework Name/Number]
+
+🕒 *Estimated Time: X hours*
+
+---
+
+## 📋 Homework Overview
+
+Brief description of what students will showcase in this homework. Explain that this homework compiles work from 2-3 LABS completed over the last few weeks.
+
+**Note**: This homework compiles work from 2-3 weekly LABS. Each LAB represents the next step of your project. Show us your individual progress by compiling your work into the requested deliverable.
+
+---
+
+## 📝 Instructions
+
+### Who?
+Individual homework assignment - 1 per team member.
+
+### What?
+[One sentence describing what students need to compile/create, e.g., "Compile your work from the last 3 weeks into a complete AI-powered reporter software that queries a public API, displays data in a Shiny application, and uses AI to generate reporting summaries."]
+
+### Why?
+[One sentence explaining the purpose, e.g., "This homework demonstrates your cumulative learning by showcasing how you've integrated API queries, web applications, and AI capabilities into a working software tool."]
+
+---
+
+## ✅ Your Deliverable
+
+### [Specific Deliverable Name, e.g., AI-Powered Reporter Software] [X pts]
+
+[Description of what the deliverable should be and what it should demonstrate]
+
+**Requirements:**
+
+- [ ] **📝 [X pts] Writing Component**: Brief written explanation of your system (NOT AI-generated)
+- [ ] **🔗 [X pts] Git Repository Links**: Working, valid links to relevant content in your git repository
+- [ ] **📸 [X pts] Screenshots/Outputs**: Screenshots and/or samples of outputs
+- [ ] **📚 [X pts] Documentation**: 
+  - Table summarizing data columns
+  - Information needed to understand your software
+  - How to understand and use your software
+
+**Total: 100 pts**
+
+---
+
+# 📤 To Submit
+
+- For credit: Submit all four required components listed in the **Requirements** section above (100 pts total).
+
+---
+
+![](../../docs/prep/icons.png)
+
+---
+
+← 🏠 [Back to Top](#HOMEWORK)
+```
+
+### Content Guidelines
+- **Concise**: Homeworks are compilation assignments, not lengthy question sets. Keep them brief and focused.
+- **Showcase-focused**: Students demonstrate progress by compiling work, not answering questions.
+- **Deliverable-oriented**: Each homework requests a specific deliverable (e.g., AI-powered reporter software).
+- **Progress demonstration**: Emphasize showing individual progress over the last 2-3 weeks.
+- **Required components**: Always specify the four required components:
+  1. Writing component (NOT AI-generated)
+  2. Git repository links (working and valid)
+  3. Screenshots/samples of outputs
+  4. Brief documentation (data tables, usage instructions, etc.)
+
+### Common Sections
+- **"Homework Overview"** - What students will showcase and how it relates to LABS
+- **"Instructions"** - Who, what, why (each one sentence)
+- **"Your Deliverable"** - Specific deliverable requested with detailed requirements checklist and point allocation
+- **"To Submit"** - Brief submission reminder pointing to Requirements section
+
+### Deliverable Formatting
+- Use `### [Deliverable Name] [X pts]` for the main deliverable section
+- Use checkboxes `- [ ]` with point values `**📝 [X pts] Component Name**` for required components
+- **Total points must equal 100 pts** across all components
+- Be specific about what the deliverable should demonstrate
+- Reference which LABS this deliverable compiles
+- Break down points logically (e.g., 25 pts for writing, 25 pts for git links, 25 pts for screenshots, 25 pts for documentation)
+
+### Required Components
+
+#### 1. Writing Component
+- **Must NOT be AI-generated**: Explicitly state this requirement
+- Brief explanation of the system
+- Should explain what the system does and how it works
+- Written in the student's own words
+
+#### 2. Git Repository Links
+- **Working and valid**: Links must be functional
+- **Relevant content**: Links should point to specific files, commits, or branches relevant to the homework
+- Use markdown link format: `[Link Text](https://github.com/user/repo/path/to/file)`
+
+#### 3. Screenshots/Outputs
+- Screenshots of the software in action
+- Samples of outputs (e.g., generated reports, data visualizations)
+- Should demonstrate that the software works
+- Use markdown image format: `![Alt Text](path/to/screenshot.png)`
+
+#### 4. Documentation
+- **Data table**: Table summarizing columns in the dataset
+- **Usage instructions**: How to understand and use the software
+- **Technical details**: Any information needed to understand the software
+- Keep it brief but comprehensive
+
+### LAB Compilation
+- **Reference LABS**: Specify which LABS this homework compiles (e.g., "This homework compiles work from LAB 1, LAB 2, and LAB 3")
+- **Project continuity**: Emphasize that each LAB represents the next step of their project
+- **Cumulative showcase**: Homeworks showcase cumulative progress, not just individual LAB work
+
+### Point Allocation
+- **Total homework points: 100 pts**
+- Main deliverable section should indicate total points: `### [Deliverable Name] [100 pts]`
+- Each required component should have clear point values: `**📝 [X pts] Component Name**`
+- Point values should sum to 100 pts across all components
+- Use consistent formatting: `[X pts]` for point values
+- Common breakdown examples:
+  - Writing component: 20-30 pts
+  - Git repository links: 20-25 pts
+  - Screenshots/outputs: 20-30 pts
+  - Documentation: 20-30 pts
+
+---
+
+## Formatting Standards
+
+### Icons Usage
+- **📌** for the main header (HOMEWORK)
+- **🕒** for time estimates
+- **✅** for task/deliverable sections
+- **📋** for overviews
+- **📝** for instructions and writing components
+- **🔗** for links (git repository links)
+- **📸** for screenshots
+- **📚** for documentation
+- **📤** for submission sections
+- Reference [`docs/prep/icons.md`](docs/prep/icons.md) for more options
+
+### Text Formatting
+- **Bold** for:
+  - Key terms and concepts
+  - Important file names
+  - Deliverable names
+  - Required components
+  - Emphasis on critical information (e.g., "NOT AI-generated")
+- *Italics* for:
+  - Time estimates
+  - Subtle emphasis
+  - Alternative phrasing
+- `Inline code` for:
+  - File names
+  - Commands
+  - Code snippets
+  - Function names
+  - Technical terms
+  - Git repository paths
+
+### File References
+- **Always** use relative hyperlinks: [`filename.ext`](relative/path/to/file.ext)
+- Link to images: `![Alt Text](relative/path/to/image.png)`
+- Link to external resources: `[Link Text](https://url.com)`
+- Link to LAB files when referencing them: [`LAB_name.md`](path/to/LAB_name.md)
+- **Git repository links**: Use full URLs to GitHub/GitLab repositories: `[Link Text](https://github.com/user/repo/path/to/file)`
+
+### Lists
+- Use `- [ ]` for required components checklist items
+- Use `-` for informational items, explanations, or context
+- Use numbered lists `1.` for sequential processes where order matters
+- Add icons to list items when helpful
+
+### Tables
+- Use markdown tables for data documentation
+- Example data table format:
+```markdown
+| Column Name | Type | Description |
+|------------|------|-------------|
+| id | integer | Unique identifier |
+| name | text | Name of the item |
+```
+
+---
+
+## Writing Style
+
+### Tone
+- **Concise**: Get to the point quickly; homeworks are compilation assignments, not lengthy question sets
+- **Direct**: State requirements clearly and directly
+- **Clear**: Specify exactly what students need to submit
+- **Supportive**: Acknowledge that this showcases their progress
+
+### Clarity
+- Explain what the deliverable should be
+- Specify all required components clearly
+- Provide examples when helpful (e.g., what a good data table looks like)
+- Use simple language; define jargon inline
+
+### Examples to Avoid
+```markdown
+❌ It is critical that you complete this step.
+❌ Obviously, you should include screenshots.
+❌ As you can see, this is important.
+```
+
+### Examples to Use
+```markdown
+✅ Include screenshots showing your software in action.
+✅ Provide working links to your git repository.
+✅ Write a brief explanation of your system in your own words (NOT AI-generated).
+```
+
+---
+
+## Checklist for HOMEWORK Creation
+
+When creating or editing a HOMEWORK, ensure:
+- [ ] Header: `# 📌 HOMEWORK`
+- [ ] Title: `## [Homework Name/Number]`
+- [ ] Time estimate: `🕒 *Estimated Time: X hours*`
+- [ ] Homework overview section explaining compilation of LABS
+- [ ] Instructions section with Who, What, Why, and What to Include
+- [ ] Deliverable section with specific requirements and point allocation
+- [ ] All four required components specified with point values:
+  - [ ] Writing component (NOT AI-generated) with point value
+  - [ ] Git repository links (working and valid) with point value
+  - [ ] Screenshots/samples of outputs with point value
+  - [ ] Brief documentation (data table, usage instructions) with point value
+- [ ] Total points equal 100 pts
+- [ ] Submission section: `# 📤 To Submit`
+- [ ] Footer image: `![](../../docs/prep/icons.png)` (adjusted for file location)
+- [ ] Back to top link: `← 🏠 [Back to Top](#HOMEWORK)`
+- [ ] All file references are hyperlinked
+- [ ] LAB references included when appropriate
+- [ ] Uses icons and formatting appropriately
+- [ ] Tone is concise and direct
+- [ ] Emphasizes that writing component must NOT be AI-generated
+
+---
+
+## Footer Path Adjustment
+
+The footer image path must be adjusted based on file location:
+
+- Files in `docs/`: `![](prep/icons.png)`
+- Files one level deep (e.g., `04_deployment/digitalocean/`): `![](../../docs/prep/icons.png)`
+- Files two levels deep: `../../../docs/prep/icons.png`
+- Always use relative path to `docs/prep/icons.png`
+
+---
+
+## Relationship to LABS and ACTIVITIES
+
+### Hierarchy
+1. **ACTIVITIES** - Hands-on step-by-step instructions for specific tasks
+2. **LABS** - Weekly assignments that represent the next step of a student's project (lightly depend on ACTIVITIES)
+3. **HOMEWORKS** - Concise compilation assignments that showcase progress from 2-3 LABS
+
+### Key Principles
+- **LABS build on ACTIVITIES**: Students complete ACTIVITIES to learn concepts, then apply them in LABS
+- **HOMEWORKS compile LABS**: Each homework compiles 2-3 LABS into a specific deliverable
+- **Project continuity**: Each LAB represents the next step of the student's project
+- **Progress showcase**: Homeworks demonstrate cumulative progress, not just individual LAB work
+- **Deliverable-focused**: Each homework requests a specific deliverable (e.g., AI-powered reporter software)
+
+### When Creating HOMEWORKS
+- **Be concise**: Homeworks are compilation assignments, not lengthy question sets
+- **Specify deliverable**: Clearly state what students need to create/showcase
+- **Reference LABS**: Specify which LABS this homework compiles
+- **Emphasize components**: Always include the four required components
+- **Project context**: Reference that this is the culmination of their activities so far
+
+### Example Homework Structure
+- **Homework 1**: AI-powered reporter software (culmination of activities from LAB 1, LAB 2, LAB 3)
+- **Homework 2**: [Next deliverable] (culmination of activities from LAB 4, LAB 5, LAB 6)
+- Each homework requests a specific deliverable that demonstrates progress

@@ -1,0 +1,201 @@
+---
+description: Developer-oriented README formatting preferences for human-readable docs
+globs: ["**/README*.md", "**/readme*.md"]
+alwaysApply: false
+---
+
+# Developer README Formatting Guide
+
+Use this rule when writing or editing README files. Focus on clarity for developers: quick scanning, consistent structure, and easy navigation.
+
+---
+
+## Table of Contents
+
+- [Purpose & principles](#purpose--principles)
+- [Structure & headers](#structure--headers)
+- [Table of contents](#table-of-contents-in-the-readme)
+- [Code examples](#code-examples)
+- [Diagrams](#diagrams)
+- [Lists & bullets](#lists--bullets)
+- [External references](#external-references)
+- [Quick checklist](#quick-checklist)
+
+---
+
+## Purpose & principles
+
+- **Audience**: Developers (maintainers, contributors, API consumers). Assume technical literacy; avoid unnecessary hand-holding.
+- **Goal**: Answer “what is this?”, “how do I run it?”, and “where do I go next?” in under two minutes.
+- **Tone**: Direct, scannable, and factual. Prefer bullets and short paragraphs over long prose.
+- **Length**: Prefer brevity. Link to detailed docs instead of duplicating them in the README.
+
+---
+
+## Structure & headers
+
+Use a consistent hierarchy so humans and tools can parse the doc:
+
+- **Single `#`**: Document title only (e.g. `# Project Name`).
+- **`##`**: Major sections (Overview, Installation, Usage, API, Contributing).
+- **`###`**: Subsections within those. Avoid going deeper than `###` for normal READMEs.
+
+Example outline:
+
+```markdown
+# My Service
+
+## Overview
+## Requirements
+## Installation
+## Usage
+## Configuration
+## API Reference
+## Contributing
+## License
+```
+
+Keep section names predictable. Common patterns: [Overview](https://www.writethedocs.org/guide/writing/beginners-guide-to-docs/), [Getting started](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes), Installation, Usage, API/Reference, Contributing, License.
+
+---
+
+## Table of contents (in the README)
+
+- Place the **Table of Contents (TOC)** near the top, after a short intro (1–3 sentences).
+- Use **anchor links** so readers can jump to sections. In GitHub/GitLab, anchors are usually auto-generated from headings (lowercase, spaces → hyphens).
+
+Example:
+
+```markdown
+## Table of Contents
+
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+```
+
+This gives developers a map of the README and speeds up navigation. See [GitHub’s generated IDs](https://github.com/jch/html-pipeline/blob/main/lib/html/pipeline/toc_filter.rb) for how heading anchors work.
+
+---
+
+## Code examples
+
+- Use **fenced code blocks** with a language tag so syntax highlighting works.
+- Prefer **short, runnable** snippets. For long or multi-file examples, link to a `docs/` or `examples/` path.
+- Add a **one-line comment** when the next step is non-obvious.
+
+Example:
+
+```markdown
+## Installation
+
+Install with pip:
+
+\`\`\`bash
+pip install -e .
+\`\`\`
+
+Set your API key (required for the client):
+
+\`\`\`bash
+export MY_API_KEY=your_key_here
+\`\`\`
+```
+
+For API or SDK usage, one concise example is enough; link to full API docs for the rest.
+
+---
+
+## Diagrams
+
+Use **Mermaid** for flow or structure when it helps more than text. Prefer 1–2 diagrams per README (e.g. high-level architecture, or “where to start”).
+
+**Flow: how a new developer might use the README**
+
+```mermaid
+flowchart LR
+  A[Open README] --> B[Read Overview]
+  B --> C[Check Requirements]
+  C --> D[Install]
+  D --> E[Run Example]
+  E --> F[Link to API Docs]
+```
+
+**Typical README section flow**
+
+```mermaid
+flowchart TD
+  subgraph README
+    O[Overview]
+    I[Installation]
+    U[Usage]
+    R[Reference]
+  end
+  O --> I --> U --> R
+```
+
+Keep diagrams simple. For syntax and options, see [Mermaid docs](https://mermaid.js.org/intro/).
+
+---
+
+## Lists & bullets
+
+- Use **bullets** for non-sequential items (features, options, prerequisites).
+- Use **numbered lists** for steps that must be done in order (e.g. installation, first run).
+- Use **checklists** (`- [ ]` / `- [x]`) for “before you start” or “verify setup” lists.
+
+Example:
+
+```markdown
+## Requirements
+
+- Python 3.9+
+- Access to the Foo API ([sign up](https://example.com/signup))
+
+## Quick start
+
+1. Clone the repo.
+2. Install dependencies: `pip install -r requirements.txt`.
+3. Set `FOO_API_KEY` and run `python main.py`.
+```
+
+---
+
+## External references
+
+Link to official or canonical docs so developers can go deeper without leaving the README:
+
+- **APIs**: Link to the official API reference or OpenAPI/Swagger URL.
+- **Libraries**: Link to the library’s README or “Getting started” (e.g. [Requests](https://requests.readthedocs.io/en/latest/), [httr](https://httr.r-lib.org/)).
+- **Markdown**: [CommonMark](https://commonmark.org/help/) and [GitHub Flavored Markdown](https://github.github.com/gfm/) for syntax.
+- **Mermaid**: [Mermaid live editor](https://mermaid.live/) and [documentation](https://mermaid.js.org/intro/).
+
+Example in README:
+
+```markdown
+## API usage
+
+This client wraps the [Foo API](https://docs.foo.com/api). For full endpoint details, see the [official API reference](https://docs.foo.com/api/reference).
+```
+
+---
+
+## Quick checklist
+
+When writing or reviewing a developer-focused README:
+
+- [ ] Single `#` title; `##` and `###` for sections.
+- [ ] TOC with anchor links near the top.
+- [ ] Short overview (what it is, why it exists).
+- [ ] Clear installation/run steps with copy-paste code blocks.
+- [ ] At least one usage example; link to more.
+- [ ] 1–2 Mermaid diagrams only if they add clarity.
+- [ ] Bullets for options/features; numbers for ordered steps.
+- [ ] Links to external API/library docs where relevant.
+- [ ] Contributing and/or license section if the repo is open source.
+
+---
+
+← [Back to top](#developer-readme-formatting-guide)

@@ -1,0 +1,401 @@
+---
+description: Always apply to READ_, ACTIVITY_, and LAB_ markdown files
+alwaysApply: false
+---
+# READ_, ACTIVITY_, and LAB_ Documentation Rules
+
+## File Naming Convention
+- **READ_** prefix: Reading/learning materials (e.g., `READ_digitalocean.md`)
+- **ACTIVITY_** prefix: Hands-on activities with step-by-step instructions (e.g., `ACTIVITY_digitalocean_signup.md`)
+- **LAB_** prefix: Lab exercises/assignments (e.g., `LAB_query_api.md`)
+
+All three types follow the same basic structure with consistent headers and footers.
+
+---
+
+## Common Structure (All Types)
+
+### Required Header Format
+```markdown
+# 📌 [TYPE]
+
+## [Title/Name]
+
+🕒 *Estimated Time: X minutes*
+```
+
+### Required Footer Format
+```markdown
+![](../../docs/prep/icons.png)
+
+---
+
+← 🏠 [Back to Top](#[TYPE])
+```
+
+**Note**: The footer image path should be adjusted based on file location. Use relative path to `docs/prep/icons.png`.
+
+---
+
+## READ_ Files (Reading Materials)
+
+### Purpose
+Educational content that explains concepts, tools, or topics. Students read these to learn before activities.
+
+### Structure Template
+```markdown
+# 📌 READ
+
+## [Topic Name]
+
+🕒 *Estimated Time: X minutes*
+
+---
+
+## [Section 1]
+
+Content explaining the topic...
+
+## [Section 2]
+
+More content...
+
+---
+
+![](../../docs/prep/icons.png)
+
+---
+
+← 🏠 [Back to Top](#READ)
+```
+
+### Content Guidelines
+- **Explanatory**: Focus on "what" and "why" rather than "how"
+- **Educational**: Provide context, background, and conceptual understanding
+- **Concise**: Keep explanations clear and to the point
+- **Use formatting**: Bold key terms, italicize emphasis, use icons for visual interest
+- **Include examples**: Reference real-world use cases or comparisons when helpful
+- **Tables**: Use tables for comparisons (e.g., vendor comparisons, feature lists)
+
+### Common Sections
+- "What is [Topic]?" - Introduction and definition
+- "What to Expect" - Practical expectations (costs, time, outcomes)
+- "For Future Reference" - Additional resources or considerations
+- Comparison tables for tools/services
+
+### Example Pattern
+```markdown
+## What is **DigitalOcean**?
+
+> Brief description with key points highlighted.
+
+## What to Expect
+
+- Practical expectations listed
+- Cost information if relevant
+- Time commitments
+
+## For Future Reference
+
+Additional context or resources...
+```
+
+---
+
+## ACTIVITY_ Files (Hands-On Activities)
+
+### Purpose
+Step-by-step instructions for students to complete specific tasks. These are actionable guides.
+
+### Header Requirements
+- **"Your Task" header**: Always use exactly `## ✅ Your Task` with no additional description or text in the header itself
+- **"To Submit" header**: Always use exactly `# 📤 To Submit` with no additional text in the header itself
+- Any descriptions or explanations should go in the paragraph content below the headers, not in the header text
+
+### Structure Template
+```markdown
+# 📌 ACTIVITY
+
+## [Activity Name]
+
+🕒 *Estimated Time: 10-15 minutes*
+
+---
+
+## ✅ Your Task
+
+Brief 1-2 sentence description of what students will accomplish.
+
+### 🧱 Stage 1: [Stage Name]
+
+- [ ] Essential step 1
+- [ ] Essential step 2
+- [ ] Essential step 3
+
+### 🧱 Stage 2: [Next Stage]
+
+- [ ] Essential step 1
+- [ ] Essential step 2
+
+---
+
+# 📤 To Submit
+
+- For credit: [Brief submission requirements, e.g., screenshot]
+
+---
+
+![](../../docs/images/icons.png)
+
+---
+
+← 🏠 [Back to Top](#ACTIVITY)
+```
+
+### Content Guidelines
+- **Action-oriented**: Every step should be clear and actionable
+- **Checkboxes**: Only use `- [ ]` for actual tasks that users can check off as completed. Use regular bullets `-` for informational items, explanations, or non-actionable content
+- **Stages**: Break complex activities into stages with `### Stage X:` or `### [Stage Name]:`. **Keep activities to 2-3 stages maximum**. If an activity is getting long or complex, consider splitting it into a second activity
+- **Time estimates**: Activities should take **10-15 minutes** maximum. Keep instructions brief and focused.
+- **Brevity**: Remove unnecessary bullet points. Consolidate steps where possible. Focus on essential actions only.
+- **Screenshots**: Include images showing what students should see
+- **Icons in stages**: Use icons like 🧱 for stages, 🔗 for links
+- **File references**: Always link to files when mentioned: [`filename.ext`](path/to/file.ext)
+- **Submission section**: Always include `# 📤 To Submit` with clear requirements
+- **Submission format**: **Always require a screenshot** unless there's a special need for more (e.g., code file, written response). Keep submission requirements simple and consistent.
+- **Length management**: Keep activities concise and focused. Avoid duplication between activities. If an activity exceeds 2-3 stages or becomes too long, suggest splitting it into multiple activities
+
+### Step Formatting
+- Use checkboxes: `- [ ]` only for actionable steps that users can check off
+- Use regular bullets: `-` for informational items, explanations, or context that doesn't require action
+- Bold important UI elements: "Select **Create** >> **App Platform**"
+- Use inline code for technical terms: "Select the `main` branch"
+- Include images after relevant steps with descriptive alt text
+- Link to external resources: `[Link Text](URL)`
+
+### Common Patterns
+```markdown
+## ✅ Your Task
+
+In this activity, you will [brief description of what they'll accomplish].
+
+### 🧱 Stage 1: [Stage Name]
+
+- [ ] Step description (actionable task)
+- [ ] Another step (actionable task)
+- Context or explanation without checkbox
+
+![Screenshot](../images/screenshot.png)
+
+### Stage 2: [Next Stage]
+
+- [ ] More actionable steps...
+
+---
+
+# 📤 To Submit
+
+- For credit: [Submission requirements]
+```
+
+**Note**: Keep activities to 2-3 stages. If an activity is getting long, suggest splitting it into a second activity.
+
+---
+
+## LAB_ Files (Lab Exercises)
+
+### Purpose
+Lab assignments that combine reading, activities, and independent work. More comprehensive than activities.
+
+### Structure Template
+```markdown
+# 📌 LAB
+
+## [Lab Name]
+
+🕒 *Estimated Time: X minutes*
+
+---
+
+## 📋 Lab Overview
+
+Brief description of what students will accomplish in this lab.
+
+## ✅ Your Tasks
+
+### Task 1: [Task Name]
+
+- [ ] Step 1
+- [ ] Step 2
+
+### Task 2: [Task Name]
+
+- [ ] Step 1
+- [ ] Step 2
+
+## 💡 Tips and Resources
+
+- Helpful tips
+- Links to relevant documentation
+- Common pitfalls to avoid
+
+## 📤 To Submit
+
+- For credit: [Submission requirements]
+
+---
+
+![](../../docs/prep/icons.png)
+
+---
+
+← 🏠 [Back to Top](#LAB)
+```
+
+### Content Guidelines
+- **Comprehensive**: Labs are more extensive than activities
+- **Multiple tasks**: Often include multiple related tasks
+- **Independent work**: May require students to apply concepts independently
+- **Tips section**: Include helpful hints and resources
+- **Code examples**: Include code snippets when relevant, with file references
+
+### Common Sections
+- "Lab Overview" - What students will accomplish
+- "Your Tasks" - Multiple tasks broken into sections
+- "Tips and Resources" - Helpful guidance
+- "To Submit" - Submission requirements
+
+---
+
+## Formatting Standards (All Types)
+
+### Icons Usage
+- **📌** for the main header (READ/ACTIVITY/LAB)
+- **🕒** for time estimates
+- **✅** for task sections
+- **🧱** for stages/phases
+- **🔗** for links
+- **📤** for submission sections
+- **💡** for tips
+- **📋** for overviews/checklists
+- Reference [`docs/prep/icons.md`](docs/prep/icons.md) for more options
+
+### Text Formatting
+- **Bold** for:
+  - Key terms and concepts
+  - UI element names (buttons, menus, etc.)
+  - Important file names
+  - Emphasis on critical information
+- *Italics* for:
+  - Time estimates
+  - Subtle emphasis
+  - Alternative phrasing
+- `Inline code` for:
+  - File names
+  - Commands
+  - Code snippets
+  - Technical terms
+  - Branch names, folder paths
+
+### File References
+- **Always** use relative hyperlinks: [`filename.ext`](relative/path/to/file.ext)
+- Link to images: `![Alt Text](relative/path/to/image.png)`
+- Link to external resources: `[Link Text](https://url.com)`
+
+### Lists
+- Use `- [ ]` for actionable steps that users can check off as completed (checkboxes)
+- Use `-` for informational items, explanations, context, or non-actionable content
+- Use numbered lists `1.` for sequential processes where order matters
+- Add icons to list items when helpful
+- **Important**: Only use checkboxes when referring to a specific task a user can check off as having done
+
+### Images
+- Include screenshots showing what students should see
+- Use descriptive alt text
+- Place images after relevant steps
+- Use relative paths: `../images/filename.png` or `../../images/filename.png`
+
+---
+
+## Writing Style (All Types)
+
+### Tone
+- **Concise**: Get to the point; avoid unnecessary words
+- **Humble**: Don't assume expertise; explain clearly
+- **Direct**: State facts directly; avoid phrases like "it is obvious" or "it is critical"
+- **Patient**: Remember audience is learning Git, AI, APIs for the first time
+
+### Clarity
+- Explain acronyms on first use
+- Break complex steps into smaller sub-steps
+- Provide context for why steps are needed
+- Use simple language; define jargon inline
+
+### Examples to Avoid
+```markdown
+❌ It is critical that you complete this step.
+❌ Obviously, you should select the main branch.
+❌ As you can see, this is important.
+```
+
+### Examples to Use
+```markdown
+✅ Complete this step to configure your API endpoint.
+✅ Select the main branch from the dropdown menu.
+✅ This step ensures your app deploys correctly.
+```
+
+---
+
+## Checklist for Each Type
+
+### READ_ Checklist
+- [ ] Header: `# 📌 READ` or `# 📌 READ: [TOPIC]`
+- [ ] Title section with `## [Topic Name]`
+- [ ] Time estimate: `🕒 *Estimated Time: X minutes*`
+- [ ] Educational content with clear sections
+- [ ] Footer image: `![](../../docs/prep/icons.png)`
+- [ ] Back to top link: `← 🏠 [Back to Top](#READ)`
+- [ ] All file references are hyperlinked
+- [ ] Uses icons and formatting appropriately
+
+### ACTIVITY_ Checklist
+- [ ] Header: `# 📌 ACTIVITY`
+- [ ] Title: `## [Activity Name]`
+- [ ] Time estimate: `🕒 *Estimated Time: 10-15 minutes*` (activities should be brief)
+- [ ] Task section: `## ✅ Your Task` (no extra description in header)
+- [ ] Checkboxes used only for actionable tasks users can check off
+- [ ] Regular bullets used for informational items
+- [ ] Activity is concise and focused (2-3 stages maximum, minimal bullet points)
+- [ ] No unnecessary bullet points or redundant steps
+- [ ] No duplication with other activities
+- [ ] Stages are clearly marked with `###`
+- [ ] Screenshots included where helpful
+- [ ] Submission section: `# 📤 To Submit` (no extra text in header)
+- [ ] Submission requires screenshot (unless special need for more)
+- [ ] Footer image: `![](../../docs/images/icons.png)` (adjust path as needed)
+- [ ] Back to top link: `← 🏠 [Back to Top](#ACTIVITY)`
+- [ ] All file references are hyperlinked
+
+### LAB_ Checklist
+- [ ] Header: `# 📌 LAB`
+- [ ] Title: `## [Lab Name]`
+- [ ] Time estimate: `🕒 *Estimated Time: X minutes*`
+- [ ] Lab overview section
+- [ ] Multiple tasks clearly organized
+- [ ] Tips and resources section (if applicable)
+- [ ] Submission section: `# 📤 To Submit`
+- [ ] Footer image: `![](../../docs/prep/icons.png)`
+- [ ] Back to top link: `← 🏠 [Back to Top](#LAB)`
+- [ ] All file references are hyperlinked
+
+---
+
+## Footer Path Adjustment
+
+The footer image path must be adjusted based on file location:
+
+- Files in `docs/`: `![](prep/icons.png)`
+- Files one level deep (e.g., `04_deployment/digitalocean/`): `![](../../docs/prep/icons.png)`
+- Files two levels deep: `../../../docs/prep/icons.png`
+- Always use relative path to `docs/prep/icons.png`
