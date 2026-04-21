@@ -229,3 +229,6 @@ test-results/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+
+# Temporarily ignore local GitHub Actions workflows
+.github/workflows/
