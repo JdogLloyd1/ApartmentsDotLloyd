@@ -108,9 +108,7 @@ async def trigger_refresh(payload: RefreshRequest | None = None) -> RefreshRespo
     with Session(get_engine()) as session:
         run = session.get(RefreshRun, run_id)
         assert run is not None
-        return RefreshResponse(
-            run_id=run_id, status=run.status, started_at=run.started_at
-        )
+        return RefreshResponse(run_id=run_id, status=run.status, started_at=run.started_at)
 
 
 @router.get(

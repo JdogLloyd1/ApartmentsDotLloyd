@@ -25,7 +25,7 @@ todos:
     status: completed
   - id: sprint-7
     content: "Sprint 7 — Local Full-Stack Validation (deployment gate): Dockerfile, docker-compose.local.yml, Makefile up-local, E2E smoke, standalone RUN_LOCALLY.md walkthrough, LOCAL_VALIDATION.md QA checklist"
-    status: in_progress
+    status: completed
   - id: sprint-8
     content: "Sprint 8 — Production Deployment: prod compose + Caddy, bootstrap script, GitHub Actions deploy, DO droplet smoke, Posit fallback documented"
     status: pending

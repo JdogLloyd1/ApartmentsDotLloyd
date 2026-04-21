@@ -101,7 +101,9 @@ class PlaywrightFetcher:
                     try:
                         await page.wait_for_selector(wait_for_selector, timeout=10_000)
                     except Exception as exc:
-                        logger.info("wait_for_selector %r timed out on %s: %s", wait_for_selector, url, exc)
+                        logger.info(
+                            "wait_for_selector %r timed out on %s: %s", wait_for_selector, url, exc
+                        )
                 html = await page.content()
             finally:
                 await page.close()

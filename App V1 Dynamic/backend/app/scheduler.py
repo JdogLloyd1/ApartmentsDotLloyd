@@ -89,9 +89,7 @@ def start_scheduler() -> AsyncIOScheduler | None:
         max_instances=1,
     )
     scheduler.start()
-    logger.info(
-        "scheduler started: daily_refresh=%r, hourly_prices=%r", daily, hourly
-    )
+    logger.info("scheduler started: daily_refresh=%r, hourly_prices=%r", daily, hourly)
     _scheduler = scheduler
     return scheduler
 

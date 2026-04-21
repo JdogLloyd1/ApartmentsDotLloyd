@@ -1,0 +1,33 @@
+# Keep the image small and deterministic: never ship caches, DBs, or
+# local virtualenvs into the build context.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+.env
+.env.*
+!.env.example
+
+tests/
+docs/
+
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Build artifacts from local `pip install -e .`
+*.egg-info/
+build/
+dist/

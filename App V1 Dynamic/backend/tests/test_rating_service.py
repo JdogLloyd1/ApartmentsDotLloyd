@@ -96,9 +96,7 @@ async def test_refresh_ratings_uses_search_url_when_forced_by_slug(
 ) -> None:
     monkeypatch.setattr("app.scrapers.rating_service.jitter", _no_jitter)
     json_html = (FIXTURES / "google_json_rating.html").read_text(encoding="utf-8")
-    expected_url = (
-        "https://www.google.com/search?q=Cambridge%20Park%2030%20Cambridgepark%20Dr"
-    )
+    expected_url = "https://www.google.com/search?q=Cambridge%20Park%2030%20Cambridgepark%20Dr"
     fetcher = _FakeFetcher({expected_url: json_html})
 
     result = await refresh_ratings(fetcher=fetcher, slugs=["cambridge-park"])  # type: ignore[arg-type]

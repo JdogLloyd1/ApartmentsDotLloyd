@@ -22,9 +22,7 @@ from app.scrapers.rating_service import RatingRefreshResult
 
 
 @pytest.fixture
-def isolated_db(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> Iterator[None]:
+def isolated_db(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     db_path = tmp_path / "service.db"
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
     get_settings.cache_clear()
@@ -48,10 +46,14 @@ async def test_execute_refresh_success_persists_succeeded(
     async def _ok_iso() -> dict[str, int]:
         return {"walk": 3, "drive": 3}
 
-    async def _ok_prices(*, fetcher: object | None = None, slugs: list[str] | None = None) -> PriceRefreshResult:
+    async def _ok_prices(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> PriceRefreshResult:
         return PriceRefreshResult(attempted=2, succeeded=2, failed=0, skipped=0)
 
-    async def _ok_ratings(*, fetcher: object | None = None, slugs: list[str] | None = None) -> RatingRefreshResult:
+    async def _ok_ratings(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> RatingRefreshResult:
         return RatingRefreshResult(attempted=2, succeeded=2, failed=0, skipped=0)
 
     monkeypatch.setattr("app.refresh_service.refresh_travel_times", _ok_travel)
@@ -86,10 +88,14 @@ async def test_execute_refresh_marks_failed_when_step_raises(
     async def _ok_iso() -> dict[str, int]:
         return {"walk": 0, "drive": 0}
 
-    async def _skip_prices(*, fetcher: object | None = None, slugs: list[str] | None = None) -> PriceRefreshResult:
+    async def _skip_prices(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> PriceRefreshResult:
         return PriceRefreshResult(attempted=0, succeeded=0, failed=0, skipped=0)
 
-    async def _skip_ratings(*, fetcher: object | None = None, slugs: list[str] | None = None) -> RatingRefreshResult:
+    async def _skip_ratings(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> RatingRefreshResult:
         return RatingRefreshResult(attempted=0, succeeded=0, failed=0, skipped=0)
 
     monkeypatch.setattr("app.refresh_service.refresh_travel_times", _raising_travel)
@@ -132,10 +138,14 @@ async def test_execute_refresh_invalidates_cache(
     async def _noop_iso() -> dict[str, int]:
         return {"walk": 0, "drive": 0}
 
-    async def _noop_prices(*, fetcher: object | None = None, slugs: list[str] | None = None) -> PriceRefreshResult:
+    async def _noop_prices(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> PriceRefreshResult:
         return PriceRefreshResult(attempted=0, succeeded=0, failed=0, skipped=0)
 
-    async def _noop_ratings(*, fetcher: object | None = None, slugs: list[str] | None = None) -> RatingRefreshResult:
+    async def _noop_ratings(
+        *, fetcher: object | None = None, slugs: list[str] | None = None
+    ) -> RatingRefreshResult:
         return RatingRefreshResult(attempted=0, succeeded=0, failed=0, skipped=0)
 
     monkeypatch.setattr("app.refresh_service.refresh_travel_times", _noop_travel)

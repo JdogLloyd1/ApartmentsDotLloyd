@@ -59,7 +59,7 @@ class Settings(BaseSettings):
     )
     refresh_daily_cron: str | None = Field(
         default=None,
-        description='Cron expression for the nightly full refresh (UTC). '
+        description="Cron expression for the nightly full refresh (UTC). "
         'Example: "30 7 * * *" \u2248 03:30 America/New_York during DST.',
     )
     refresh_hourly_cron: str | None = Field(

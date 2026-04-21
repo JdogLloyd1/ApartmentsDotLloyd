@@ -221,6 +221,10 @@ App V1 Dynamic/backend/.env
 *.db-wal
 *.db-shm
 
+# docker compose bind-mount target (commit the directory, not contents)
+App V1 Dynamic/backend/alewife-data/*
+!App V1 Dynamic/backend/alewife-data/.gitkeep
+
 # Playwright artifacts
 playwright-report/
 test-results/

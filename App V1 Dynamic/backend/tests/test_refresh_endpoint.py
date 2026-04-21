@@ -40,9 +40,7 @@ def _seed_a_building() -> None:
 
 
 @pytest.fixture
-def api(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> Iterator[TestClient]:
+def api(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
     db_path = tmp_path / "refresh.db"
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
     monkeypatch.setenv("REFRESH_BEARER_TOKEN", VALID_TOKEN)
@@ -81,7 +79,13 @@ def stub_orchestration(monkeypatch: pytest.MonkeyPatch) -> dict[str, int]:
         return {
             "steps": {
                 "travel_times": {"status": "ok", "walk": 1, "drive": 1},
-                "prices": {"status": "ok", "attempted": 0, "succeeded": 0, "failed": 0, "skipped": 0},
+                "prices": {
+                    "status": "ok",
+                    "attempted": 0,
+                    "succeeded": 0,
+                    "failed": 0,
+                    "skipped": 0,
+                },
             }
         }
 

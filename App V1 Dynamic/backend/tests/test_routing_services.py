@@ -44,7 +44,9 @@ class _FakeORSClient:
         destination: tuple[float, float],
     ) -> list[float | None]:
         self.matrix_calls.append(profile)
-        name = "matrix_foot_walking.json" if profile == "foot-walking" else "matrix_driving_car.json"
+        name = (
+            "matrix_foot_walking.json" if profile == "foot-walking" else "matrix_driving_car.json"
+        )
         payload = _load(name)
         durations: list[list[float]] = payload["durations"]
         base = [row[0] for row in durations]

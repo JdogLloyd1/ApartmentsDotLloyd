@@ -556,9 +556,21 @@ Nine sequential sprints. Each sprint is independently testable — its verificat
 
 ---
 
-### Sprint 7 — Local Full-Stack Validation (gate before deployment)
+### Sprint 7 — Local Full-Stack Validation (gate before deployment) — **CODE COMPLETE, awaiting user validation**
 
 **Goal:** Prove the entire app runs locally end-to-end against real external services. **This sprint is mandatory — Sprint 8 may not start until it passes.**
+
+**Status (Cursor-side, 2026-04-20):** All deliverables landed. The maintainer now walks [`App V1 Dynamic/LOCAL_VALIDATION.md`](App%20V1%20Dynamic/LOCAL_VALIDATION.md) top to bottom against a real Docker Desktop install to close the sprint. Unit suite: **80 passed, 8 skipped** (7 E2E gated on `E2E=1`, 1 pre-existing). Ruff check + format clean. Live uvicorn smoke on port 8017 confirmed `/api/health` → 200 and `/api/buildings` → 19 rows with `X-Data-Freshness` header.
+
+**Completed artifacts**
+
+- `App V1 Dynamic/backend/Dockerfile` on `mcr.microsoft.com/playwright/python:v1.49.1-noble`, Chromium preinstalled, `PLAYWRIGHT_BROWSERS_PATH=/ms-playwright`. Source and static frontend land at `/srv/backend` + `/srv/frontend`; SQLite at `/srv/data/alewife.db`.
+- `App V1 Dynamic/backend/.dockerignore` excludes caches, `.venv`, real `.env`, and local DB files.
+- `App V1 Dynamic/docker-compose.local.yml` — single `api` service, bind mount `./backend/alewife-data:/srv/data`, `env_file: backend/.env`, built-in healthcheck, `REFRESH_SCHEDULER_ENABLED=false` by default.
+- `Makefile` + `make.ps1` mirrored targets: `build-local`, `up-local`, `down-local`, `logs-local`, `seed`, `refresh-all`, `smoke-e2e`.
+- `App V1 Dynamic/backend/tests/e2e/test_smoke.py` (7 tests, `@pytest.mark.skipif E2E != 1`) covers health, buildings seed, `/api/refresh` happy path, 6 isochrones, post-refresh price-snapshot presence, dashboard HTML shell, and cache invalidation on refresh.
+- `App V1 Dynamic/RUN_LOCALLY.md` — standalone, developer-README-formatted walkthrough from `git clone` to working dashboard.
+- `App V1 Dynamic/LOCAL_VALIDATION.md` — six-phase QA checklist covering clean boot → API surface → refresh → UI → auth → resource check.
 
 **Deliverables**
 

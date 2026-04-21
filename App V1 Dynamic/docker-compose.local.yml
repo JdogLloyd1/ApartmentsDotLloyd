@@ -1,0 +1,39 @@
+# Local-only compose file for the Alewife dashboard.
+#
+# Runs just the API container (no Caddy, no TLS). The production stack
+# lives in docker-compose.yml; this file is the one developers invoke
+# via `make up-local`.
+#
+# Usage from the repo root:
+#   docker compose -f "App V1 Dynamic/docker-compose.local.yml" up --build
+#   docker compose -f "App V1 Dynamic/docker-compose.local.yml" down
+#
+# The SQLite file is bind-mounted so the developer can inspect it between
+# runs without ever entering the container. Wipe it by deleting
+# backend/alewife-data/alewife.db on the host.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: alewife-api:local
+    container_name: alewife-api-local
+    ports:
+      - "8000:8000"
+    env_file:
+      - backend/.env
+    environment:
+      # Pin scheduler off in local dev so nightly cron jobs don't fire
+      # unexpectedly. Override via backend/.env if you want to test them.
+      REFRESH_SCHEDULER_ENABLED: "false"
+    volumes:
+      # SQLite + WAL files land on the host so they survive container
+      # restarts and can be opened with any SQLite browser.
+      - ./backend/alewife-data:/srv/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/api/health').read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

@@ -16,9 +16,7 @@ from app.scheduler import get_scheduler, shutdown_scheduler
 
 
 @pytest.fixture
-def empty_app(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> Iterator[None]:
+def empty_app(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
     db_path = tmp_path / "scheduler.db"
     monkeypatch.setenv("DATABASE_URL", f"sqlite:///{db_path}")
     get_settings.cache_clear()
@@ -33,9 +31,7 @@ def empty_app(
     invalidate_all()
 
 
-def test_scheduler_disabled_by_default(
-    empty_app: None, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_scheduler_disabled_by_default(empty_app: None, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("REFRESH_SCHEDULER_ENABLED", raising=False)
     get_settings.cache_clear()
     app = create_app()
@@ -43,9 +39,7 @@ def test_scheduler_disabled_by_default(
         assert get_scheduler() is None
 
 
-def test_scheduler_starts_when_enabled(
-    empty_app: None, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_scheduler_starts_when_enabled(empty_app: None, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("REFRESH_SCHEDULER_ENABLED", "true")
     monkeypatch.setenv("REFRESH_DAILY_CRON", "30 7 * * *")
     monkeypatch.setenv("REFRESH_HOURLY_CRON", "0 13-23 * * *")

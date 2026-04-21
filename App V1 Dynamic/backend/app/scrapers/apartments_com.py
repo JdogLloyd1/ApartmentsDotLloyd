@@ -103,9 +103,7 @@ def _bed_count_to_field(bed_count: int) -> str | None:
     return None
 
 
-def _extract_from_ld(
-    listing: ApartmentsListing, blocks: list[dict[str, Any]]
-) -> ApartmentsListing:
+def _extract_from_ld(listing: ApartmentsListing, blocks: list[dict[str, Any]]) -> ApartmentsListing:
     """Fill in rents from any ``ApartmentComplex`` ``offers`` array.
 
     We look for per-bed offers first, then fall back to ``priceRange``
@@ -188,9 +186,7 @@ def _extract_from_floor_plans(listing: ApartmentsListing, tree: HTMLParser) -> A
     return listing
 
 
-def _extract_from_price_summary(
-    listing: ApartmentsListing, tree: HTMLParser
-) -> ApartmentsListing:
+def _extract_from_price_summary(listing: ApartmentsListing, tree: HTMLParser) -> ApartmentsListing:
     """Parse the ``"Studio \u2013 $2,430+"`` summary blocks as a last resort."""
 
     rows = tree.css(".priceBedRangeInfo .column, .priceGrid li, .pricingContainer .priceInfo li")
