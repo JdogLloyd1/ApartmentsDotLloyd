@@ -26,6 +26,13 @@ services:
       # Pin scheduler off in local dev so nightly cron jobs don't fire
       # unexpectedly. Override via backend/.env if you want to test them.
       REFRESH_SCHEDULER_ENABLED: "false"
+      # Force the DB onto the bind-mounted /srv/data volume so it
+      # survives `docker compose up --build`. `environment:` takes
+      # precedence over `env_file:`, which is important because
+      # `.env.example` ships a host-relative `sqlite:///alewife.db`
+      # that would otherwise park the SQLite file inside the image at
+      # /srv/backend/alewife.db and get wiped on every rebuild.
+      DATABASE_URL: "sqlite:////srv/data/alewife.db"
     volumes:
       # SQLite + WAL files land on the host so they survive container
       # restarts and can be opened with any SQLite browser.

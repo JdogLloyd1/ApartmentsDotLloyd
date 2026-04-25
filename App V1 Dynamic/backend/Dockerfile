@@ -5,11 +5,18 @@
 # specific Noble (Ubuntu 24.04) build so a future tag change can't silently
 # regress the scrapers.
 #
+# IMPORTANT: this tag MUST match the ``playwright`` pin in
+# ``backend/pyproject.toml``. Playwright publishes a new browser bundle
+# in every minor release, and the Python client refuses to launch
+# Chromium unless the two versions line up exactly (you'll see
+# "Executable doesn't exist at /ms-playwright/chromium..." otherwise).
+# When upgrading, bump both files in the same commit.
+#
 # Build from the repo root:
 #   docker build -f "App V1 Dynamic/backend/Dockerfile" -t alewife-api "App V1 Dynamic"
 #
 # See App V1 Dynamic/RUN_LOCALLY.md for the developer-facing walkthrough.
-FROM mcr.microsoft.com/playwright/python:v1.49.1-noble
+FROM mcr.microsoft.com/playwright/python:v1.58.0-noble
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

@@ -11,24 +11,89 @@
     "All entries below are placeholders. Replace each null with the real URL or place_id, then run: python -m app.seed.loader"
   ],
   "buildings": {
-    "cambridge-park":              { "apartments_com_url": null, "google_place_id": null },
-    "urbane-at-alewife":           { "apartments_com_url": null, "google_place_id": null },
-    "luxe-at-alewife":             { "apartments_com_url": null, "google_place_id": null },
-    "hanover-alewife":             { "apartments_com_url": null, "google_place_id": null },
-    "fuse-cambridge":              { "apartments_com_url": null, "google_place_id": null },
-    "windsor-at-cambridge-park":   { "apartments_com_url": null, "google_place_id": null },
-    "atmark":                      { "apartments_com_url": null, "google_place_id": null },
-    "tempo-cambridge":             { "apartments_com_url": null, "google_place_id": null },
-    "linea-cambridge":             { "apartments_com_url": null, "google_place_id": null },
-    "park77-apartments":           { "apartments_com_url": null, "google_place_id": null },
-    "the-wyeth":                   { "apartments_com_url": null, "google_place_id": null },
-    "fresh-pond-apartments":       { "apartments_com_url": null, "google_place_id": null },
-    "clarendon-hill-towers":       { "apartments_com_url": null, "google_place_id": null },
-    "vox-on-two":                  { "apartments_com_url": null, "google_place_id": null },
-    "the-royal-belmont":           { "apartments_com_url": null, "google_place_id": null },
-    "brentwood-apartments":        { "apartments_com_url": null, "google_place_id": null },
-    "the-legacy-at-arlington-center": { "apartments_com_url": null, "google_place_id": null },
-    "brigham-square":              { "apartments_com_url": null, "google_place_id": null },
-    "arlington-360":               { "apartments_com_url": null, "google_place_id": null }
+    "cambridge-park": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "urbane-at-alewife": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "luxe-at-alewife": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "hanover-alewife": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "fuse-cambridge": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "windsor-at-cambridge-park": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "atmark": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "tempo-cambridge": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "linea-cambridge": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "park77-apartments": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "the-wyeth": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "vox-on-two": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "the-royal-belmont": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "brentwood-apartments": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "the-legacy-at-arlington-center": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "brigham-square": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "arlington-360": {
+      "apartments_com_url": null,
+      "google_place_id": null
+    },
+    "park87-apartments": {
+      "apartments_com_url": "https://www.apartments.com/park87-apartments-cambridge-ma/fzn06tt/",
+      "google_place_id": null
+    },
+    "the-laurent": {
+      "apartments_com_url": "https://www.apartments.com/the-laurent-cambridge-ma/z8mh6pz/",
+      "google_place_id": null
+    },
+    "the-brook": {
+      "apartments_com_url": "https://www.apartments.com/the-brook-luxury-apartments-of-cambridge-cambridge-ma/dn7vf7j/",
+      "google_place_id": null
+    },
+    "605-concord-at-fresh-pond": {
+      "apartments_com_url": "https://www.apartments.com/605-concord-at-fresh-pond-cambridge-ma/3r2d1rg/",
+      "google_place_id": null
+    }
   }
 }

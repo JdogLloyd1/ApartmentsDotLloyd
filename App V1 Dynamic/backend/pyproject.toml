@@ -19,7 +19,11 @@ dependencies = [
 
 [project.optional-dependencies]
 scraping = [
-  "playwright>=1.49",
+  # Playwright's Python package and the bundled Chromium in the Docker
+  # image must match exactly. Upgrade in lockstep with the `FROM` tag in
+  # backend/Dockerfile (currently v1.58.0-noble) or `chromium.launch()`
+  # will fail with "Executable doesn't exist at /ms-playwright/...".
+  "playwright==1.58.0",
   "selectolax>=0.3.28",
   "beautifulsoup4>=4.12",
 ]

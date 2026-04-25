@@ -760,3 +760,111 @@ flowchart TD
 
 
 Sprints 3, 4, and 5 can proceed in parallel once Sprint 2 lands, since none of them depend on each other's outputs. Sprints 6 onward are strictly sequential.
+
+---
+
+## 20. Backlog — Post-MVP Enhancements
+
+Items noted during development but deferred until the core sprints land. Ordered roughly by expected value.
+
+### B1. Hand-curated / auto-generated overview split
+
+**Problem.** `Building.overview` and `Building.amenities` are hand-written editorial content copied from the original static dashboard. They never refresh. New buildings added via the `add-building` skill currently rely on marketing copy synthesis (captures the "what" but not the "trade-off" voice the existing seeds use).
+
+**Proposal.** Split into two layers:
+
+- `Building.overview` stays hand-curated; UI prefers it when non-empty.
+- New `Building.auto_summary` column populated by the agent from marketing copy or (eventually) reviews. UI falls back to it when `overview` is empty.
+- Same pattern for `amenities` vs. a new `auto_amenities` column, or extend the existing scrapers to write an `AmenitySnapshot` table.
+
+**Scope.**
+
+- SQLModel migration: add `auto_summary: str | None` and either `auto_amenities: list[str]` or a new snapshot table.
+- Seed loader: pass through the new fields without overwriting `overview` / `amenities` when they're already populated.
+- `/api/buildings` response: include `auto_summary`; merge with `overview` via a `display_overview` helper.
+- Frontend: prefer `overview`; fall back to `auto_summary`; tag the badge so the user knows which source is rendering.
+- `add-building` skill: write to `auto_summary` by default, leave `overview` empty unless the user provides one.
+
+**Out of scope.** Auto-refresh of `auto_summary` on a schedule — that comes with B2 below, once a reviews source exists.
+
+### B2. Review-driven overview synthesis
+
+**Problem.** Marketing copy from apartments.com produces bland overviews ("Modern mid-rise with premium amenities"). The existing hand-written overviews are trade-off aware because they came from reading user reviews.
+
+**Proposal.** Extend the existing Google Maps Playwright scraper to pull reviews. Store them in a new `ReviewSnapshot` table. During a refresh cycle (or on-demand), the agent summarizes the last N reviews into an `auto_summary` that captures the top 1-2 complaints + the top 1-2 praises.
+
+**Source.** Playwright on Google Maps — already in the stack, no new API key, same bot-wall handling as the ratings scraper. Rate-limit carefully to stay within Google's ToS for scraping public content.
+
+**Scope.**
+
+- New `ReviewSnapshot(building_id, author, rating, text, posted_at, fetched_at)` table.
+- New scraper module `app/scrapers/review_service.py` mirroring `rating_service.py` shape.
+- Review summarizer: could be the agent itself via a new `/api/summarize` endpoint, or a dedicated LLM call behind a feature flag (the review text never leaves the server, summaries do).
+- Refresh orchestration: add reviews to the existing `refresh-all` sequence, behind a new `REVIEWS_ENABLED` setting (default off).
+
+**Depends on.** B1 (needs `auto_summary` column).
+
+**Gotchas.** Google's ToS on scraping reviews is a gray area. Rate-limit to one building per minute, obey `robots.txt`, never republish raw review text — store internally and surface only synthesized summaries on the dashboard.
+
+### B3. Canonical amenity vocabulary as a config file
+
+**Problem.** The amenity-normalization table currently lives inline in `.cursor/skills/add-building/SKILL.md`. If it drifts from what the seed actually contains, the agent will produce inconsistent labels.
+
+**Proposal.** Lift the vocabulary into `App V1 Dynamic/backend/app/seed/amenity_vocabulary.json` and have both the skill and the scraper (if ever extended to amenities) read from it. The skill's table becomes a pointer to the config file.
+
+**Scope.** Small: one new JSON file, a one-liner change in the skill, and optional use by future scrapers.
+
+### B4. Web-based admin UI for building CRUD
+
+**Problem.** After prod deploy, the only way to add/edit/remove buildings is to SSH into the droplet and edit `buildings_seed.json`. The `add-building` / `remove-building` Cursor Skills handle the local-dev path elegantly, but they require a running Cursor session with repo access — not a "pull out your phone" workflow.
+
+**Trigger to build.** Revisit if any of these happen post-deploy:
+
+- You're editing the catalog more than ~2×/month and it feels painful.
+- A second person needs to manage the catalog and shouldn't need Cursor + repo access.
+- You want to add buildings from a phone / tablet / non-dev environment.
+
+**Decisions already made.**
+
+- **Source of truth: DB-as-truth.** Runtime reads + writes go against `alewife.db`. The seed JSON files become bootstrap-only — they seed an empty DB on first boot and are otherwise ignored. No file writes from the running container. An `audit_log` table replaces git history for change provenance.
+- **Why not JSON-as-truth:** forces the container to mutate paths that were baked into the image; brittle in prod; bind-mounting seed files defeats the point of image immutability.
+- **Why not dual-sync:** over-engineered for a single-operator deploy. Revisit if B4 is built and catalog changes start piling up unreviewed.
+
+**Decisions deferred until build-time.**
+
+- **Auth model.** Choose one when the feature is actually being built:
+  - Option 1: Reuse `REFRESH_BEARER_TOKEN` — single secret, zero new surface.
+  - Option 2: Separate `ADMIN_BEARER_TOKEN` — distinct scope, same complexity.
+  - Option 3: Real user auth (login + sessions) — only if multiple humans will administer.
+
+**Scope outline** (~1.5-2 days when we build it):
+
+- **Backend — new admin endpoints** (`app/api/admin_buildings.py`):
+  - `POST /api/admin/buildings` — create, validates against a `BuildingCreate` schema, returns 409 on slug collision, writes an `audit_log` row, calls `invalidate_all()`.
+  - `PATCH /api/admin/buildings/{slug}` — partial update, same auth + audit + cache rules.
+  - `DELETE /api/admin/buildings/{slug}` — cascade delete across `travel_time`, `price_snapshot`, `rating_snapshot`, `building`; mirror the cascade order from `remove-building`'s Phase 4.
+  - All protected by the auth decorator chosen at build-time.
+  - Optional: `POST /api/admin/buildings/draft` — takes an `apartments_com_url`, does server-side fetch + parse (using `selectolax`, already in deps), returns a draft `overview` + `amenities` array. Productizes the skill's Phase 3.1 without the LLM rewrite — purely template-driven extraction.
+- **Backend — new `audit_log` table:**
+  - Columns: `id`, `at` (UTC), `actor` (token label or user id), `action` (`create` / `update` / `delete`), `slug`, `before` (JSON), `after` (JSON).
+  - Not exposed via the API initially; inspect via `sqlite3` on the droplet.
+- **Frontend — new `/admin.html`:**
+  - Vanilla HTML + vanilla JS — no framework, no build step. Matches the existing dashboard's stack.
+  - Form fields for every `Building` column, with the bearer-token input stored in `localStorage`.
+  - List view of existing buildings with inline edit + delete.
+  - "Draft from URL" button that calls the optional `/draft` endpoint and prefills `overview` + `amenities`.
+  - "Refresh now" button that calls the existing `POST /api/refresh` so prices/ratings populate after an add.
+- **Tests:**
+  - Unit: admin endpoints (auth, validation, cascade delete, cache invalidation, audit log writes).
+  - E2E: create building via API → appears in `/api/buildings` → refresh → prices populate → delete → gone.
+- **Docs:**
+  - `RUN_LOCALLY.md` — add a "Prefer the web UI?" callout alongside the existing "Prefer the agent?" callout in the Maintaining the catalog section.
+  - `CURSOR.md` — note that the DB is the runtime source of truth and admin writes bypass the JSON files entirely.
+
+**Interaction with existing skills.** The `add-building` and `remove-building` skills keep working unchanged — they edit JSON and run `make seed`, which upserts by slug and does not conflict with DB rows created via the admin UI. Consider: in practice the skill path stays useful for bulk operations (seeding a new neighborhood from a list of URLs) while the admin UI covers one-off edits. Both paths converge on the same DB rows.
+
+**Gotchas to remember at build-time.**
+
+- The seed loader is upsert-only. If a building is deleted via the admin UI but still present in `buildings_seed.json`, the next `make seed` run re-creates it. Two options: (a) drop the JSON files from the deployed image entirely post-bootstrap, (b) teach the loader to skip slugs marked `deleted_at != null` in the DB. Pick at build-time.
+- Cache invalidation must run synchronously after every write, or the UI will show stale data for up to 5 min (the TTL window).
+- The `scrape_targets.json` sidecar is redundant once B4 ships — its two fields (`apartments_com_url`, `google_place_id`) already live on the `Building` table and would be edited directly via the admin form. Plan to retire the sidecar in the same change.
